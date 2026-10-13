@@ -29,7 +29,7 @@ window.PROFESSIONAL_FIGURES = [
     "category": "results",
     "width": 1500,
     "height": 590,
-    "visible": true,
+    "visible": false,
     "format": "svg"
   },
   {

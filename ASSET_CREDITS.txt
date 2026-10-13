@@ -2,8 +2,8 @@ ProfessionalBench website assets
 
 Manuscript and figures
 - Supplied by the project owner: humanlaya_professionalbench (35).pdf.
-- Figures 1–14 are displayed on the site; the complete manuscript includes Figures 1–17.
-- All 14 displayed figures use SVG vector paths extracted from the supplied manuscript with Poppler. No displayed SVG contains an embedded raster image.
+- Figures 1, 2, and 4–14 are displayed on the site (13 figures). The complete manuscript includes Figures 1–17; Figure 3 is omitted from the page to avoid repeating the interactive efficiency chart.
+- All 13 displayed figures use SVG vector paths extracted from the supplied manuscript with Poppler. No displayed SVG contains an embedded raster image.
 - Figure 12 replaces only raster decorative card backgrounds with SVG rectangles. Original labels, data, and chart geometry are retained.
 - Small raster decorations in Figure 1 (cycle arrows), Figure 2 (shadows and hierarchical task-space decoration), and Figure 5 (color bar) are replaced with native SVG geometry. Figure 2 decorative shadows are simplified; the source data and substantive figure content are retained.
 - Older WebP crops remain in the asset archive but are not displayed on the page.

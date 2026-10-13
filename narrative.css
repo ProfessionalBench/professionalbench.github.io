@@ -19,13 +19,6 @@
 .motivation .paper-figure{margin-top:36px}
 .benchmark-snapshot{padding:8px 0 70px}
 .snapshot-note{font-size:14px;line-height:1.8;text-align:center;color:#647a81;margin:18px auto 24px;max-width:760px}
-.construction-disclosure{border-top:1px solid #d7e5e2;border-bottom:1px solid #d7e5e2;padding:0 2px}
-.construction-disclosure summary{display:flex;justify-content:space-between;gap:15px;list-style:none;cursor:pointer;font-size:17px;color:var(--deep);padding:23px 4px;font-weight:600}
-.construction-disclosure summary::-webkit-details-marker{display:none}
-.construction-disclosure summary span{font-size:24px;line-height:1;transition:transform .2s}
-.construction-disclosure[open] summary span{transform:rotate(45deg)}
-.construction-disclosure>div{padding:0 0 26px}
-.construction-disclosure>div>p{font-size:15px;line-height:1.8;max-width:880px;color:#526d73}
 .paper-figure{padding:20px;margin-top:32px}
 .editorial-figure figcaption{font-size:12px;line-height:1.75;gap:24px}
 .figure-button .zoom-chip{width:34px;height:34px;display:grid;place-items:center;padding:0;border-radius:50%;font-size:18px;opacity:.75}
@@ -85,7 +78,6 @@
  .kac-connection{text-align:left;font-size:14px}
  .benchmark-snapshot{padding-bottom:45px}
  .snapshot-note{font-size:13px;text-align:left}
- .construction-disclosure summary{font-size:15px}
  .editorial-figure figcaption{font-size:11px}
  #efficiency .efficiency-card{padding:17px 12px}
  #efficiency .bubble-meta{font-size:10px;padding-inline:0;gap:6px}
@@ -101,4 +93,27 @@
  #efficiency .bubble-legend button img{width:16px;height:16px}
  #efficiency .source-line{display:block;line-height:1.8}
  #efficiency .source-line a{margin-left:5px}
+}
+
+/* Bring measured results forward; keep the detailed framework with the experiments. */
+.motivation-brief{padding-block:34px 32px;background:#fcfdfb}
+.brief-intro{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center}
+.brief-intro h2{font-size:clamp(29px,3.2vw,41px);line-height:1.2;margin:0}
+.brief-intro>p{font-size:16px;line-height:1.9;color:#49656f;margin:0}
+.brief-responsibilities{margin:25px 0 0;font-size:15px;line-height:1.9;color:#5c747c}
+.brief-responsibilities strong{color:var(--teal);margin-left:17px}
+.brief-responsibilities strong:first-child{margin-left:0}
+.benchmark-snapshot{padding-bottom:30px}
+.benchmark-snapshot .snapshot-note{margin-bottom:0}
+#leaderboard{padding-top:58px}
+.framework-section .motivation-gaps{margin-top:10px}
+.construction-section .paper-figure{margin-top:0}
+@media(max-width:600px){
+ .motivation-brief{padding-block:23px 24px}
+ .brief-intro{grid-template-columns:1fr;gap:18px}
+ .brief-intro>p{font-size:14px;line-height:1.8}
+ .brief-responsibilities{font-size:13px;line-height:2;margin-top:17px}
+ .brief-responsibilities strong{margin-left:10px}
+ .benchmark-snapshot{padding-bottom:20px}
+ #leaderboard{padding-top:40px}
 }
