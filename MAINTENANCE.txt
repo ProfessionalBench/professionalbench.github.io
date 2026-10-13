@@ -6,7 +6,7 @@ ProfessionalBench 网页维护
 
 本次改版
 - 居中标题、Humanlaya 深海蓝与浅青背景；没有自动轮播。
-- 阅读顺序：简短 Motivation / Know–Act–Close → 统计 → Results & Efficiency → Figure 1 与框架详解 → 小实验 → Showcases → Construction → 任务分类。
+- 阅读顺序：简短 Motivation / Know–Act–Close → Figure 1 → 统计 → Results & Efficiency → 框架详解 → 小实验 → Showcases → Construction → 任务分类。
 - Construction 作为独立可见章节，直接放在 Three domains 任务分类前；没有折叠。移除独立 Evaluation、章节编号等重复小字。
 - 页面展示 13 张论文图：Figure 1、2、4–14。移除与交互效率图重复的 Figure 3，以及 Beyond one benchmark 和图示索引。原论文仍完整保留。
 - 页面展示的 13 张论文图均为 SVG 矢量图，无嵌入位图；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
