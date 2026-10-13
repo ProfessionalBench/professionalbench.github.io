@@ -22,7 +22,8 @@
     legal: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v17M7 22h10M5 7h14M12 3l1 2-1 2-1-2zM5 7l-3 8h6L5 7zm14 0-3 8h6l-3-8zM2 15c1 3 5 3 6 0M16 15c1 3 5 3 6 0"/></svg>',
     healthcare: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8v5h5v8h-5v5H8v-5H3V8h5z"/></svg>'
   };
-  const mark = m => `<span class="model-mark" style="--model-color:${color(m.color)}" aria-hidden="true">${localPath(m.logo) ? `<img src="${escape(m.logo)}" alt="">` : escape(m.mark)}</span>`;
+  const assetUrl = path => window.PROFESSIONAL_PREVIEW_ASSETS?.[path] || path;
+  const mark = m => `<span class="model-mark" style="--model-color:${color(m.color)}" aria-hidden="true">${localPath(m.logo) ? `<img src="${escape(assetUrl(m.logo))}" alt="">` : escape(m.mark)}</span>`;
   function sortModels(domain, metric) {
     const sign = ['cost','delay'].includes(metric) ? 1 : -1;
     return [...D.models].sort((a,b) => sign * (a.results[domain][metric] - b.results[domain][metric]) || b.results[domain].score - a.results[domain].score || a.name.localeCompare(b.name));

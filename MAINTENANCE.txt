@@ -1,0 +1,58 @@
+ProfessionalBench 网页维护
+
+站点：https://professionalbench.github.io/
+仓库：https://github.com/ProfessionalBench/professionalbench.github.io
+发布分支：main；GitHub Pages 使用 main 的根目录。
+
+本次改版
+- 居中标题、Humanlaya 深海蓝与浅青背景；没有自动轮播。
+- 17 张论文 Figure 按章节完整呈现，点击可放大；页面末尾提供图示索引。
+- 成本 / 耗时气泡图使用 Table 2，支持领域切换、鼠标靠近高亮、点击固定和键盘选择。
+- 排行榜与交互图使用本地模型厂家 SVG 图标。
+- 现有三组案例保留，增加轨迹、交付物、评估结果展示区。
+
+常改的文件
+- index.html：标题、简介、章节顺序、论文图、论文页码链接。
+- experience.css：本次改版的排版、品牌颜色、阴影与交互样式。
+- styles.css：原有基础样式。
+- experience.js：气泡图、案例切换、轨迹展示逻辑。
+- app.js：排行榜、排序、压缩实验切换、图示弹窗、引用复制。
+- data/benchmark-data.js：论文跑分与统计；同步修改 data/professionalbench-results.csv。
+- data/figures.js：17 张图的源文件、尺寸、页码清单。
+- data/case-studies.js：案例描述与轨迹接入位置。
+- assets/professionalbench-paper.pdf：当前用户提供的最新版论文；原文件完整保留。
+
+接入真实 case 轨迹
+1. 将经确认可公开的记录和交付物放入 cases/ 下。
+2. 找到 data/case-studies.js 对应的 finance / legal / healthcare 条目。
+3. 把 trajectory: null 替换成下列结构；网页自动显示步骤查看与播放控件：
+   trajectory: {
+     model: '实际运行模型名称',
+     steps: [
+       {
+         title: '实际步骤标题',
+         phase: 'Know',
+         summary: '实际执行内容或经过整理的操作摘要',
+         tool: '实际工具名称（可省略）',
+         evidence: [{label: '相关证据', href: 'cases/finance/evidence.html'}]
+       }
+     ]
+   }
+4. deliverables 中可增加 href: 'cases/finance/result.xlsx'，发布文件后自动出现查看入口。
+5. 目前 trajectory 为 null，站点明确显示 forthcoming，不存在虚构的运行轨迹。
+
+数据定义
+- 气泡图横轴可以切换 USD/task 或 min/task，纵轴为 Outcome Score。
+- 成本横轴模式下圆面积正比于耗时；耗时横轴模式下圆面积正比于成本。
+- 圆心不因鼠标交互而移动，坐标始终对应原始数据。
+- 原论文 Figure 3 另行完整保留，其面积代表 token consumption，与交互图编码不同。
+- 435 是完整任务集；排行榜 overall 基于 90 个任务，单领域 30 个。
+- 所有结果是所附论文的静态快照。
+
+本地预览
+在仓库根目录运行 python3 -m http.server 8000，然后打开 http://localhost:8000。
+不需要安装 npm 依赖。也可直接打开单独交付的 ProfessionalBench_preview.html。
+
+发布更新
+将修改提交到 main 后，GitHub Pages 自动构建。构建成功后访问公开网址并刷新缓存。
+不需要创建新仓库，不需要更换网址。不要在仓库提交凭据或未经确认可公开的案例材料。

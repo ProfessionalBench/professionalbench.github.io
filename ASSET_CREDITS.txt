@@ -1,0 +1,19 @@
+ProfessionalBench website assets
+
+Manuscript and figures
+- Supplied by the project owner: humanlaya_professionalbench (35).pdf.
+- Figure panels 1–17 are faithful crops from that manuscript.
+- The Humanlaya logo is the supplied project identity.
+
+Model provider icons
+- Source: LobeHub lobe-icons, @lobehub/icons-static-svg version 1.95.1.
+- Repository: https://github.com/lobehub/lobe-icons
+- Source revision: 49a2130df7bfa5eb1b088261bff20a37e2967789
+- License: MIT; the complete notice is in assets/logos/LICENSE.
+- Icons: OpenAI, Anthropic, Google, DeepSeek, Z.ai, Qwen, Moonshot AI.
+- Brand marks identify the evaluated model providers; they do not indicate endorsement.
+
+Presentation
+- Independently authored HTML, CSS, and JavaScript.
+- Editorial layout reference supplied by the owner: https://guibinz.top/JIT-site/
+- No third-party JavaScript, fonts, analytics, or runtime requests are required.
