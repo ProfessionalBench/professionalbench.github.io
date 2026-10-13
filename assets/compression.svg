@@ -2082,7 +2082,7 @@
 <clipPath id="clip-90">
 <path clip-rule="nonzero" d="M 521 132 L 537.402344 132 L 537.402344 212.121094 L 521 212.121094 Z M 521 132 " />
 </clipPath>
-</defs>
+<g id="glyph-0-11"/><g id="glyph-2-4"/></defs>
 <g clip-path="url(#clip-0)">
 <path fill-rule="nonzero" fill="rgb(100%, 100%, 100%)" fill-opacity="1" d="M 70.867188 226.136719 L 541.132812 226.136719 L 541.132812 77.953125 L 70.867188 77.953125 Z M 70.867188 226.136719 " />
 </g>

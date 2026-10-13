@@ -1968,7 +1968,7 @@
 <clipPath id="clip-0">
 <path clip-rule="nonzero" d="M 70.867188 77.949219 L 541.152344 77.949219 L 541.152344 349.671875 L 70.867188 349.671875 Z M 70.867188 77.949219 " />
 </clipPath>
-</defs>
+<g id="glyph-0-13"/><g id="glyph-1-12"/><g id="glyph-10-7"/><g id="glyph-12-8"/><g id="glyph-14-8"/><g id="glyph-15-4"/><g id="glyph-16-4"/><g id="glyph-2-10"/><g id="glyph-3-5"/><g id="glyph-5-4"/><g id="glyph-6-8"/><g id="glyph-8-8"/><g id="glyph-9-19"/></defs>
 <g clip-path="url(#clip-0)">
 <path fill-rule="evenodd" fill="rgb(100%, 100%, 100%)" fill-opacity="1" d="M 70.867188 349.671875 L 541.152344 349.671875 L 541.152344 77.949219 L 70.867188 77.949219 Z M 70.867188 349.671875 " />
 </g>
