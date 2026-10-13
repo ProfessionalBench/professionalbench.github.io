@@ -6,17 +6,19 @@ ProfessionalBench 网页维护
 
 本次改版
 - 居中标题、Humanlaya 深海蓝与浅青背景；没有自动轮播。
-- 阅读顺序：概念 → Construction → Benchmark anatomy → Evaluation → Results → Efficiency → Cases → Findings。
+- 阅读顺序：Motivation（含 Know–Act–Close 和 Figure 1）→ 统计 → Results & Efficiency → 小实验 → Showcases → 任务分类。
+- Construction 在开头统计区的可展开说明中；移除独立 Evaluation、章节编号等重复小字。
 - 页面展示 Figure 1–14；移除 Beyond one benchmark 和图示索引。原论文仍完整保留。
-- Figure 10、11、12 为从论文提取的 SVG 矢量图，全宽排列；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
-- Figure 12 的栅格卡片底图已替换为矢量矩形；原始文字、数值与图表线条完整保留。
-- 成本 / 耗时气泡图使用 Table 2，支持领域切换、鼠标靠近高亮、点击固定和键盘选择。
+- 页面展示的 Figure 1–14 均为 SVG 矢量图，无嵌入位图；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
+- 少量栅格装饰已矢量化：Figure 1 的循环箭头、Figure 2 的层级图与阴影、Figure 5 的色条、Figure 12 的卡片底色。保留原始图表内容和数据。
+- 成本 / 耗时气泡图使用 Table 2，扩大为整行画幅；横轴随领域自动适配，保留刻度与单位。模型配色增强，详情移至图下方，支持领域切换、靠近高亮、点击固定和键盘选择。
 - 排行榜与交互图使用本地模型厂家 SVG 图标。
 - 现有三组案例保留，增加轨迹、交付物、评估结果展示区。
 
 常改的文件
 - index.html：标题、简介、章节顺序、论文图、论文页码链接。
-- experience.css：本次改版的排版、品牌颜色、阴影与交互样式。
+- narrative.css：当前叙事顺序相关布局、开头动机、整行效率图和手机适配。
+- experience.css：品牌颜色、阴影与交互样式。
 - styles.css：原有基础样式。
 - experience.js：气泡图、案例切换、轨迹展示逻辑。
 - app.js：排行榜、排序、压缩实验切换、图示弹窗、引用复制。

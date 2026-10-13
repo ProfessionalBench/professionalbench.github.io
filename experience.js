@@ -14,19 +14,30 @@
   const safeLocal = value => typeof value === 'string' && /^(assets|cases)\/[a-zA-Z0-9_./%\-]+$/.test(value) && !value.includes('..') ? value : null;
   const svg = $('#bubble-chart');
   const bubble = {domain:'overall', axis:'cost', active:'gpt', pinned:null, points:[]};
-  const bounds = {left:62, right:758, top:52, bottom:375};
+  const bounds = {left:76, right:1054, top:64, bottom:432};
   const compactChart = window.matchMedia('(max-width: 600px)');
-  let plotWidth = 820;
+  let plotWidth = 1100;
+  let axisMaximum = 4;
+  let axisStep = .5;
   const y = value => bounds.bottom - (value - 35) / 40 * (bounds.bottom - bounds.top);
-  const x = value => bounds.left + value / (bubble.axis === 'cost' ? 7 : 70) * (bounds.right - bounds.left);
+  const x = value => bounds.left + value / axisMaximum * (bounds.right - bounds.left);
+  function fitHorizontalScale() {
+    const maximum=Math.max(...D.models.map(m=>m.results[bubble.domain][bubble.axis]));
+    const target=maximum*1.08/6;
+    const magnitude=10**Math.floor(Math.log10(target));
+    const candidates=[1,2,2.5,5,10].map(v=>v*magnitude);
+    axisStep=candidates.reduce((best,value)=>Math.abs(value-target)<Math.abs(best-target)?value:best);
+    axisMaximum=Math.ceil(maximum*1.08/axisStep)*axisStep;
+  }
   const selectedModel = () => D.models.find(m => m.id === bubble.active) || D.models[0];
 
   function renderBubble() {
     const cost = bubble.axis === 'cost';
     const compact = compactChart.matches;
-    plotWidth = compact ? 420 : 820;
-    Object.assign(bounds, compact ? {left:43,right:390,top:56,bottom:280} : {left:62,right:758,top:52,bottom:375});
-    svg.setAttribute('viewBox', compact ? '0 0 420 345' : '0 0 820 450');
+    plotWidth = compact ? 420 : 1100;
+    fitHorizontalScale();
+    Object.assign(bounds, compact ? {left:48,right:376,top:56,bottom:306} : {left:76,right:1054,top:64,bottom:432});
+    svg.setAttribute('viewBox', compact ? '0 0 420 375' : '0 0 1100 505');
     $('#bubble-title').textContent = `${domains[bubble.domain]}: ${cost ? 'cost' : 'time'} and Outcome Score`;
     $('#bubble-size-legend').textContent = `Circle area = ${cost ? 'execution time' : 'cost'}`;
     $('#bubble-scope').textContent = `${bubble.domain === 'overall' ? 90 : 30} tasks · ${domains[bubble.domain]}`;
@@ -34,13 +45,15 @@
       const selected = b.dataset.effDomain === bubble.domain;
       b.classList.toggle('selected', selected); b.setAttribute('aria-pressed', String(selected));
     });
-    const defs = `<defs>${D.models.map(m=>`<radialGradient id="orb-${m.id}" cx="30%" cy="25%" r="80%"><stop offset="0%" stop-color="#fff" stop-opacity=".92"/><stop offset="42%" stop-color="${m.color}" stop-opacity=".40"/><stop offset="100%" stop-color="${m.color}" stop-opacity=".82"/></radialGradient>`).join('')}</defs>`;
+    const defs = `<defs>${D.models.map(m=>`<radialGradient id="orb-${m.id}" cx="30%" cy="25%" r="80%"><stop offset="0%" stop-color="#fff" stop-opacity=".75"/><stop offset="30%" stop-color="${m.color}" stop-opacity=".64"/><stop offset="100%" stop-color="${m.color}" stop-opacity=".98"/></radialGradient>`).join('')}</defs>`;
     const horizontal = (compact ? [35,45,55,65,75] : [35,40,45,50,55,60,65,70,75]).map(v=>`<line class="grid-line" x1="${bounds.left}" x2="${bounds.right}" y1="${y(v)}" y2="${y(v)}"/><text class="axis-text" text-anchor="end" x="${bounds.left-12}" y="${y(v)+4}">${v}</text>`).join('');
-    const vertical = (compact ? [0,2,4,6,7] : [0,1,2,3,4,5,6,7]).map(i=>cost?i:i*10).map(v=>`<line class="grid-line" x1="${x(v)}" x2="${x(v)}" y1="${bounds.top}" y2="${bounds.bottom}"/><text class="axis-text" text-anchor="middle" x="${x(v)}" y="${bounds.bottom+25}">${cost?'$':''}${v}</text>`).join('');
+    const tickCount=Math.round(axisMaximum/axisStep);
+    const ticks=Array.from({length:tickCount+1},(_,i)=>Number((i*axisStep).toFixed(3))).filter((v,i)=>!compact||i%2===0||i===tickCount);
+    const vertical=ticks.map(v=>`<line class="grid-line" x1="${x(v)}" x2="${x(v)}" y1="${bounds.top}" y2="${bounds.bottom}"/><text class="axis-text" text-anchor="middle" x="${x(v)}" y="${bounds.bottom+25}">${cost?'$':''}${Number(v.toFixed(2))}</text>`).join('');
     bubble.points = D.models.map(m => {
       const r = m.results[bubble.domain];
       // Area is proportional to the secondary efficiency metric; anchors are never displaced.
-      return {id:m.id, cx:x(r[bubble.axis]), cy:y(r.score), radius:Math.sqrt(cost?r.delay:r.cost)*(cost?5.2:18)*(compact ? .75 : 1)};
+      return {id:m.id, cx:x(r[bubble.axis]), cy:y(r.score), radius:Math.sqrt(cost?r.delay:r.cost)*(cost?6.2:21)*(compact ? .52 : 1)};
     });
     const circles = [...bubble.points].sort((a,b)=>b.radius-a.radius).map(p=>{
       const m=D.models.find(m=>m.id===p.id),r=m.results[bubble.domain];
@@ -48,8 +61,8 @@
       return `<g class="bubble-node" data-model="${m.id}" role="button" tabindex="0" aria-pressed="false" aria-label="${esc(label)}"><title>${esc(label)}</title><circle class="bubble-hit" cx="${p.cx}" cy="${p.cy}" r="${Math.max(p.radius+9,22)}"/><circle class="bubble-glow" cx="${p.cx}" cy="${p.cy}" r="${p.radius+8}" stroke="${m.color}"/><circle class="bubble-orb" cx="${p.cx}" cy="${p.cy}" r="${p.radius}" fill="url(#orb-${m.id})" stroke="${m.color}"/><circle class="bubble-dot" cx="${p.cx}" cy="${p.cy}" r="3.1" fill="${m.color}"/></g>`;
     }).join('');
     const title = $('#bubble-title').outerHTML, description = $('#bubble-description').outerHTML;
-    svg.innerHTML = title+description+defs+`<g aria-hidden="true">${horizontal}${vertical}<text class="axis-title" x="${bounds.left}" y="22">Outcome Score · higher is better</text><text class="axis-title" text-anchor="middle" x="${plotWidth/2}" y="${compact?330:432}">${cost?'Cost per task (USD)':'Execution time per task (minutes)'} · lower is better</text></g><g id="bubble-guides" aria-hidden="true"></g><g id="bubble-nodes">${circles}</g><g id="bubble-callout" class="bubble-callout" aria-hidden="true" style="pointer-events:none"></g>`;
-    $('#bubble-legend').innerHTML = D.models.map(m=>`<button type="button" data-select-model="${m.id}" aria-pressed="false"><img src="${esc(assetUrl(m.logo))}" alt="" aria-hidden="true"><span>${esc(m.name)}</span></button>`).join('');
+    svg.innerHTML = title+description+defs+`<g aria-hidden="true">${horizontal}${vertical}<text class="axis-title" x="${bounds.left}" y="22">Outcome Score · higher is better</text><text class="axis-title" text-anchor="middle" x="${plotWidth/2}" y="${compact?363:489}">${cost?'Cost per task (USD)':'Execution time per task (minutes)'} · lower is better</text></g><g id="bubble-guides" aria-hidden="true"></g><g id="bubble-nodes">${circles}</g><g id="bubble-callout" class="bubble-callout" aria-hidden="true" style="pointer-events:none"></g>`;
+    $('#bubble-legend').innerHTML = D.models.map(m=>`<button type="button" data-select-model="${m.id}" aria-pressed="false"><img src="${esc(assetUrl(m.logo))}" alt="" aria-hidden="true"><i class="legend-swatch" style="--swatch:${m.color}" aria-hidden="true"></i><span>${esc(m.name)}</span></button>`).join('');
     updateModel();
   }
   function updateModel() {
@@ -67,7 +80,7 @@
     const labelWidth=Math.max(108,m.name.length*6.5+22),labelX=Math.min(plotWidth-5-labelWidth,Math.max(5,p.cx-labelWidth/2));
     const labelY=Math.max(27,p.cy-p.radius-37);
     $('#bubble-callout').innerHTML=`<rect x="${labelX}" y="${labelY}" width="${labelWidth}" height="28" rx="9"/><text x="${labelX+labelWidth/2}" y="${labelY+18}" text-anchor="middle">${esc(m.name)}</text>`;
-    $('#model-inspector').innerHTML=`<p class="inspector-status"><i aria-hidden="true"></i>${bubble.pinned?'Pinned model':'Exploring model'}</p><div class="inspector-heading"><img src="${esc(assetUrl(m.logo))}" alt="${esc(m.company)}"><div><h3>${esc(m.name)}</h3><p>${esc(m.harness)}</p></div></div><div class="inspector-score"><strong>${fixed(r.score)}</strong><span>/ 100</span></div><dl class="inspector-metrics"><div><dt>Cost / task</dt><dd>$${fixed(r.cost)}</dd></div><div><dt>Time / task</dt><dd>${fixed(r.delay)}<small> min</small></dd></div><div><dt>Professional Pass</dt><dd>${fixed(r.pass,1)}%</dd></div><div><dt>Domain</dt><dd>${domains[bubble.domain]}</dd></div></dl><p class="inspector-foot">${bubble.pinned?'Click the selected model again or press Escape to release.':'Select a circle or model name to pin its details.'}<br>Table 2 · ${bubble.domain==='overall'?'90':'30'} tasks · manuscript results</p>`;
+    $('#model-inspector').innerHTML=`<div class="inspector-heading"><img src="${esc(assetUrl(m.logo))}" alt="${esc(m.company)}"><div><h3>${esc(m.name)}</h3><p>${esc(m.harness)}${bubble.pinned?' · pinned':''}</p></div></div><div class="inspector-score"><strong>${fixed(r.score)}</strong><span>Outcome Score</span></div><dl class="inspector-metrics"><div><dt>Cost / task</dt><dd>$${fixed(r.cost)}</dd></div><div><dt>Time / task</dt><dd>${fixed(r.delay)}<small> min</small></dd></div><div><dt>Professional Pass</dt><dd>${fixed(r.pass,1)}%</dd></div></dl>`;
   }
   function activateModel(id, pin=false) {
     if(!D.models.some(m=>m.id===id))return;

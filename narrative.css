@@ -1,0 +1,104 @@
+/* The page follows the research question, the evidence, and then the task space. */
+.hero.hero-centered{padding-bottom:42px}
+.hero-centered .hero-byline{margin-top:26px}
+.humanlaya-wordmark{font-size:17px;letter-spacing:.02em;font-weight:650;color:var(--deep)}
+.hero-scroll{margin-top:28px}
+.motivation{padding-top:52px;background:linear-gradient(180deg,#fcfdfb,#eff7f3 58%,#fcfdfb)}
+.motivation-heading{max-width:870px;margin:0 auto 45px;text-align:center}
+.motivation-heading h2{font-size:clamp(31px,3.6vw,46px);line-height:1.17;margin-bottom:22px}
+.motivation-heading>p{font-size:18px;line-height:1.85;color:#49656f;max-width:790px;margin:auto}
+.motivation-gaps{display:grid;grid-template-columns:1fr 1fr;gap:62px;margin:0 auto 40px;max-width:1030px}
+.motivation-gaps h3,.motivation-example h3{font-size:24px;color:var(--deep);margin-bottom:12px}
+.motivation-gaps p,.motivation-example p{font-size:15px;line-height:1.9;color:#4c646c}
+.motivation-example{border-left:3px solid #4c9387;padding:8px 0 8px 25px;margin:40px 0 30px;max-width:940px}
+.motivation .kac-grid{gap:22px}
+.motivation .kac-card h3{font-size:29px}
+.motivation .kac-card h4{font-size:17px;line-height:1.4;margin-bottom:12px}
+.motivation .kac-card p{font-size:14px;line-height:1.85}
+.kac-connection{font-size:15px;line-height:1.9;max-width:900px;margin:27px auto 0;color:#49686b;text-align:center}
+.motivation .paper-figure{margin-top:36px}
+.benchmark-snapshot{padding:8px 0 70px}
+.snapshot-note{font-size:14px;line-height:1.8;text-align:center;color:#647a81;margin:18px auto 24px;max-width:760px}
+.construction-disclosure{border-top:1px solid #d7e5e2;border-bottom:1px solid #d7e5e2;padding:0 2px}
+.construction-disclosure summary{display:flex;justify-content:space-between;gap:15px;list-style:none;cursor:pointer;font-size:17px;color:var(--deep);padding:23px 4px;font-weight:600}
+.construction-disclosure summary::-webkit-details-marker{display:none}
+.construction-disclosure summary span{font-size:24px;line-height:1;transition:transform .2s}
+.construction-disclosure[open] summary span{transform:rotate(45deg)}
+.construction-disclosure>div{padding:0 0 26px}
+.construction-disclosure>div>p{font-size:15px;line-height:1.8;max-width:880px;color:#526d73}
+.paper-figure{padding:20px;margin-top:32px}
+.editorial-figure figcaption{font-size:12px;line-height:1.75;gap:24px}
+.figure-button .zoom-chip{width:34px;height:34px;display:grid;place-items:center;padding:0;border-radius:50%;font-size:18px;opacity:.75}
+.figure-button:hover .zoom-chip{opacity:1}
+.section-heading{margin-bottom:34px}
+.section-aside{font-size:15px;line-height:1.85}
+#efficiency{width:min(1440px,calc(100% - 56px))}
+#efficiency .section-heading,#efficiency>.paper-figure{max-width:1180px;margin-left:auto;margin-right:auto}
+#efficiency .efficiency-card{padding:30px;background:radial-gradient(ellipse at 10% 30%,#eff7f4,transparent 60%),#fff}
+#efficiency .efficiency-layout{grid-template-columns:minmax(0,1fr);gap:14px}
+#efficiency .bubble-main svg{width:100%;height:auto}
+#efficiency .bubble-meta{font-size:12px;padding:6px 14px 2px}
+#efficiency .bubble-node.is-dimmed .bubble-orb{opacity:.83}
+#efficiency .bubble-orb{stroke-width:1.8}
+#efficiency .bubble-node.is-active .bubble-orb{stroke-width:3}
+#efficiency .grid-line{stroke:#d5e3e2;stroke-dasharray:2 5}
+#efficiency .axis-text{font-size:13px;fill:#56717a}
+#efficiency .axis-title{font-size:13px;fill:#3d5c66}
+#efficiency .model-inspector{display:grid;grid-template-columns:minmax(210px,1.2fr) minmax(120px,.65fr) minmax(0,2fr);gap:24px;align-items:center;padding:20px 24px;min-height:0;border:1px solid #d5e5e0;border-radius:14px;background:#f1f7f4}
+#efficiency .inspector-heading{grid-column:auto;grid-row:auto;margin:0;gap:13px}
+#efficiency .inspector-heading h3{font-size:18px}
+#efficiency .inspector-heading p{font-size:11px;margin-top:4px}
+#efficiency .inspector-score{grid-column:auto;grid-row:auto;margin:0;display:flex;flex-direction:column;gap:3px}
+#efficiency .inspector-score strong{font-size:35px;line-height:1.1}
+#efficiency .inspector-score span{font-size:11px;color:#5c797b}
+#efficiency .inspector-metrics{grid-column:auto;grid-row:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:0;padding:0;border:0}
+#efficiency .inspector-metrics>div{padding:0;border:0}
+#efficiency .inspector-metrics dt{font-size:11px;margin-bottom:5px}
+#efficiency .inspector-metrics dd{font-size:20px}
+#efficiency .bubble-legend{gap:9px;justify-content:center;margin-top:22px}
+#efficiency .bubble-legend button{font-size:12px;gap:8px;padding:9px 12px}
+.legend-swatch{width:9px;height:9px;background:var(--swatch);border-radius:50%;flex:none}
+#efficiency .source-line{font-size:11px;justify-content:center;margin-top:18px}
+#efficiency .axis-control,#efficiency .axis-control select{font-size:12px}
+.case-card-head{font-size:13px}
+#cases .case-card h3{min-height:0}
+#benchmark .taxonomy-rail{margin-top:30px}
+@media(max-width:900px){
+ .motivation-gaps{gap:30px}
+ #efficiency{width:calc(100% - 36px)}
+ #efficiency .efficiency-card{padding:22px}
+ #efficiency .model-inspector{grid-template-columns:1.3fr .7fr;gap:18px}
+ #efficiency .inspector-metrics{grid-column:1/-1;gap:16px}
+}
+@media(max-width:600px){
+ .hero.hero-centered{padding-bottom:28px}
+ .motivation{padding-top:25px}
+ .motivation-heading{margin-bottom:30px;text-align:left}
+ .motivation-heading>p{font-size:15px;line-height:1.85}
+ .motivation-gaps{grid-template-columns:1fr;gap:26px;margin-bottom:28px}
+ .motivation-gaps h3,.motivation-example h3{font-size:22px}
+ .motivation-gaps p,.motivation-example p{font-size:14px}
+ .motivation-example{padding-left:17px;margin-top:27px}
+ .motivation .kac-grid{grid-template-columns:1fr;gap:16px}
+ .motivation .kac-card,.motivation .kac-card:first-child,.motivation .kac-card:last-child{padding:22px}
+ .motivation .kac-card .letter-icon{float:right;margin:0 0 10px 15px}
+ .kac-connection{text-align:left;font-size:14px}
+ .benchmark-snapshot{padding-bottom:45px}
+ .snapshot-note{font-size:13px;text-align:left}
+ .construction-disclosure summary{font-size:15px}
+ .editorial-figure figcaption{font-size:11px}
+ #efficiency .efficiency-card{padding:17px 12px}
+ #efficiency .bubble-meta{font-size:10px;padding-inline:0;gap:6px}
+ #efficiency .axis-text,#efficiency .axis-title{font-size:11px}
+ #efficiency .model-inspector{padding:16px;gap:16px 12px}
+ #efficiency .inspector-heading h3{font-size:15px}
+ #efficiency .inspector-heading img{width:30px;height:30px}
+ #efficiency .inspector-score strong{font-size:28px}
+ #efficiency .inspector-metrics dd{font-size:17px}
+ #efficiency .inspector-metrics dt{font-size:10px}
+ #efficiency .inspector-metrics{gap:10px}
+ #efficiency .bubble-legend button{font-size:10px;padding:8px;gap:6px}
+ #efficiency .bubble-legend button img{width:16px;height:16px}
+ #efficiency .source-line{display:block;line-height:1.8}
+ #efficiency .source-line a{margin-left:5px}
+}

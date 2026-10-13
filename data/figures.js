@@ -2,92 +2,101 @@ window.PROFESSIONAL_FIGURES = [
   {
     "id": 1,
     "page": 2,
-    "src": "assets/overview.webp",
+    "src": "assets/overview.svg",
     "title": "The ProfessionalBench framework",
     "category": "design",
-    "width": 1371,
-    "height": 420,
-    "visible": true
+    "width": 1500,
+    "height": 460,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 2,
     "page": 4,
-    "src": "assets/construction.webp",
+    "src": "assets/construction.svg",
     "title": "From real workflows to validated tasks",
     "category": "design",
-    "width": 1427,
-    "height": 598,
-    "visible": true
+    "width": 1500,
+    "height": 629,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 3,
     "page": 7,
-    "src": "assets/efficiency.webp",
+    "src": "assets/efficiency.svg",
     "title": "Model performance and efficiency",
     "category": "results",
-    "width": 1453,
-    "height": 571,
-    "visible": true
+    "width": 1500,
+    "height": 590,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 4,
     "page": 8,
-    "src": "assets/compression.webp",
+    "src": "assets/compression.svg",
     "title": "What changes when work is pre-resolved?",
     "category": "results",
-    "width": 1419,
-    "height": 468,
-    "visible": true
+    "width": 1500,
+    "height": 495,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 5,
     "page": 9,
-    "src": "assets/failure-attribution.webp",
+    "src": "assets/failure-attribution.svg",
     "title": "Where professional workflows break down",
     "category": "results",
-    "width": 1429,
-    "height": 384,
-    "visible": true
+    "width": 1500,
+    "height": 403,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 6,
     "page": 10,
-    "src": "assets/case-home-purchase.webp",
+    "src": "assets/case-home-purchase.svg",
     "title": "Home-purchase planning: pass transitions",
     "category": "cases",
-    "width": 1425,
-    "height": 821,
-    "visible": true
+    "width": 1500,
+    "height": 864,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 7,
     "page": 14,
-    "src": "assets/case-finance.webp",
+    "src": "assets/case-finance.svg",
     "title": "Finance: repayment restructuring",
     "category": "cases",
-    "width": 1408,
-    "height": 854,
-    "visible": true
+    "width": 1500,
+    "height": 910,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 8,
     "page": 15,
-    "src": "assets/case-legal.webp",
+    "src": "assets/case-legal.svg",
     "title": "Law: trade-secret investigation",
     "category": "cases",
-    "width": 1408,
-    "height": 787,
-    "visible": true
+    "width": 1500,
+    "height": 839,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 9,
     "page": 16,
-    "src": "assets/case-healthcare.webp",
+    "src": "assets/case-healthcare.svg",
     "title": "Healthcare: endocrine assessment",
     "category": "cases",
-    "width": 1408,
-    "height": 852,
-    "visible": true
+    "width": 1500,
+    "height": 908,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 10,
@@ -125,22 +134,24 @@ window.PROFESSIONAL_FIGURES = [
   {
     "id": 13,
     "page": 24,
-    "src": "assets/case-legal-compression.webp",
+    "src": "assets/case-legal-compression.svg",
     "title": "Law: data-breach litigation defense",
     "category": "cases",
-    "width": 1429,
-    "height": 824,
-    "visible": true
+    "width": 1500,
+    "height": 865,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 14,
     "page": 25,
-    "src": "assets/case-healthcare-compression.webp",
+    "src": "assets/case-healthcare-compression.svg",
     "title": "Healthcare: pathology consultation",
     "category": "cases",
-    "width": 1429,
-    "height": 811,
-    "visible": true
+    "width": 1500,
+    "height": 852,
+    "visible": true,
+    "format": "svg"
   },
   {
     "id": 15,
