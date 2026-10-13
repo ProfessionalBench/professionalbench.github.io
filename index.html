@@ -10,9 +10,9 @@
   <meta property="og:type" content="website">
   <title>ProfessionalBench — Real work. Full responsibility.</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20261013-story">
-  <link rel="stylesheet" href="experience.css?v=20261013-story">
-  <link rel="stylesheet" href="narrative.css?v=20261013-story">
+  <link rel="stylesheet" href="styles.css?v=20261013-efficiency">
+  <link rel="stylesheet" href="experience.css?v=20261013-efficiency">
+  <link rel="stylesheet" href="narrative.css?v=20261013-efficiency">
 
 
 <link rel="canonical" href="https://professionalbench.github.io/">
@@ -67,9 +67,9 @@
       </div>
     </section>
 
-<section class="section wrap" id="efficiency" aria-labelledby="efficiency-title"><div class="section-heading"><div><h2 id="efficiency-title">What does performance cost?</h2></div><p class="section-aside">Explore the trade-off between outcome, cost, and execution time. Hover over a model to see the details, or click to keep it selected.</p></div>
-<div class="efficiency-card"><div class="efficiency-toolbar"><div class="segmented" role="group" aria-label="Efficiency chart domain"><button type="button" class="selected" data-eff-domain="overall" aria-pressed="true">Overall</button><button type="button" data-eff-domain="finance" aria-pressed="false">Finance</button><button type="button" data-eff-domain="legal" aria-pressed="false">Law</button><button type="button" data-eff-domain="healthcare" aria-pressed="false">Healthcare</button></div><label class="axis-control">Compare by <select id="eff-axis"><option value="cost">Cost per task</option><option value="delay">Time per task</option></select></label></div>
-<div class="efficiency-layout"><div class="bubble-main"><div class="bubble-meta"><span id="bubble-scope">90 tasks · Overall</span><span id="bubble-size-legend">Circle area = execution time</span></div><svg id="bubble-chart" viewBox="0 0 820 450" role="group" aria-labelledby="bubble-title bubble-description"><title id="bubble-title">Cost and Outcome Score</title><desc id="bubble-description">Select any model bubble or use the model buttons below for exact results. The complete data is also in the leaderboard table.</desc></svg></div><aside class="model-inspector" id="model-inspector" aria-label="Selected model details"></aside></div>
+<section class="section wrap" id="efficiency" aria-labelledby="efficiency-title"><div class="section-heading"><div><h2 id="efficiency-title">What does performance cost?</h2></div><p class="section-aside">Compare outcome against execution time. Larger circles mean higher cost. Hover over a model for details, or click to keep it selected.</p></div>
+<div class="efficiency-card"><div class="efficiency-toolbar"><div class="segmented" role="group" aria-label="Efficiency chart domain"><button type="button" class="selected" data-eff-domain="overall" aria-pressed="true">Overall</button><button type="button" data-eff-domain="finance" aria-pressed="false">Finance</button><button type="button" data-eff-domain="legal" aria-pressed="false">Law</button><button type="button" data-eff-domain="healthcare" aria-pressed="false">Healthcare</button></div></div>
+<div class="efficiency-layout"><div class="bubble-main"><div class="bubble-meta"><span id="bubble-scope">90 tasks · Overall</span><span id="bubble-size-legend">Circle area = cost (USD/task)</span></div><svg id="bubble-chart" viewBox="0 0 1100 505" role="group" aria-labelledby="bubble-title bubble-description"><title id="bubble-title">Execution time and Outcome Score; circle area represents cost</title><desc id="bubble-description">Horizontal position shows minutes per task, vertical position shows Outcome Score, and circle area is proportional to USD per task. Select a model bubble or use the model buttons below for exact results. The complete data is also in the leaderboard table.</desc></svg></div><aside class="model-inspector" id="model-inspector" aria-label="Selected model details"></aside></div>
 <div id="bubble-legend" class="bubble-legend" role="group" aria-label="Select a model for details"></div>
 <p class="source-line">Horizontal scales adapt to each domain; read the tick labels when comparing views. <a class="paper-link" data-page="6" href="assets/professionalbench-paper.pdf#page=6" target="_blank" rel="noopener">Table 2 ↗</a></p></div><figure class="paper-figure editorial-figure " id="paper-figure-3"><button class="figure-button" type="button" data-figure="assets/efficiency.svg" data-figure-title="Figure 3 · Model performance and efficiency" aria-label="Enlarge Figure 3: Model performance and efficiency"><img src="assets/efficiency.svg" alt="Figure 3: Original paper figure: Outcome Score versus agent delay across three domains. Bubble area represents token consumption." loading="lazy" decoding="async" width="1500" height="590"><span class="zoom-chip" aria-hidden="true">↗</span></button><figcaption><span>Original paper figure: Outcome Score versus agent delay across three domains. Bubble area represents token consumption.</span><a class="paper-link" data-page="7" href="assets/professionalbench-paper.pdf#page=7" target="_blank" rel="noopener">Paper ↗</a></figcaption></figure></section>
 
@@ -123,9 +123,9 @@
   
   <dialog id="figure-dialog" class="figure-dialog" aria-labelledby="figure-dialog-title"><div class="dialog-header"><h2 id="figure-dialog-title">Paper figure</h2><button class="close-dialog" type="button" data-close="figure-dialog" aria-label="Close enlarged figure">×</button></div><div class="figure-tools"><div class="figure-zoom" role="group" aria-label="Figure zoom"><button type="button" id="figure-zoom-out" aria-label="Zoom out">−</button><output id="figure-zoom-value" aria-live="polite">100%</output><button type="button" id="figure-zoom-in" aria-label="Zoom in">+</button><button type="button" id="figure-zoom-fit">Fit</button></div><span id="figure-format-note">Scroll to explore details</span><a id="figure-original" href="assets/overview.svg" target="_blank" rel="noopener">Open original ↗</a></div><div class="figure-scroll" tabindex="0" aria-label="Enlarged figure; use zoom controls and scroll to inspect details"><div class="figure-canvas"><img id="figure-dialog-image" alt="Enlarged figure from the ProfessionalBench manuscript"></div></div></dialog>
 
-<script src="data/benchmark-data.js?v=20261013-story"></script>
-<script src="app.js?v=20261013-story"></script>
-<script src="data/case-studies.js?v=20261013-story"></script>
-<script src="experience.js?v=20261013-story"></script>
+<script src="data/benchmark-data.js?v=20261013-efficiency"></script>
+<script src="app.js?v=20261013-efficiency"></script>
+<script src="data/case-studies.js?v=20261013-efficiency"></script>
+<script src="experience.js?v=20261013-efficiency"></script>
 </body>
 </html>
