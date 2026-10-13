@@ -6,7 +6,10 @@ ProfessionalBench 网页维护
 
 本次改版
 - 居中标题、Humanlaya 深海蓝与浅青背景；没有自动轮播。
-- 17 张论文 Figure 按章节完整呈现，点击可放大；页面末尾提供图示索引。
+- 阅读顺序：概念 → Construction → Benchmark anatomy → Evaluation → Results → Efficiency → Cases → Findings。
+- 页面展示 Figure 1–14；移除 Beyond one benchmark 和图示索引。原论文仍完整保留。
+- Figure 10、11、12 为从论文提取的 SVG 矢量图，全宽排列；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
+- Figure 12 的栅格卡片底图已替换为矢量矩形；原始文字、数值与图表线条完整保留。
 - 成本 / 耗时气泡图使用 Table 2，支持领域切换、鼠标靠近高亮、点击固定和键盘选择。
 - 排行榜与交互图使用本地模型厂家 SVG 图标。
 - 现有三组案例保留，增加轨迹、交付物、评估结果展示区。
@@ -18,7 +21,7 @@ ProfessionalBench 网页维护
 - experience.js：气泡图、案例切换、轨迹展示逻辑。
 - app.js：排行榜、排序、压缩实验切换、图示弹窗、引用复制。
 - data/benchmark-data.js：论文跑分与统计；同步修改 data/professionalbench-results.csv。
-- data/figures.js：17 张图的源文件、尺寸、页码清单。
+- data/figures.js：论文图源文件、尺寸、页码清单；visible 标明网页是否展示。
 - data/case-studies.js：案例描述与轨迹接入位置。
 - assets/professionalbench-paper.pdf：当前用户提供的最新版论文；原文件完整保留。
 

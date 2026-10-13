@@ -17,3 +17,27 @@ body{background:#fcfdfb;color:var(--ink)}.wrap{width:min(1180px,calc(100% - 64px
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.hero-orbit{transform:none!important}.case-card:hover,.domain-card:hover,.kac-card:hover,.evaluation-grid article:hover,.paper-figure:hover,.button:hover{transform:none!important}}
 
 .section-heading h2,.figure-index-heading h2,.project-card h2{font-family:var(--serif);font-weight:600;letter-spacing:-.035em}
+:root { --figure-control-border: #d5e4e5; }
+
+/* Dense benchmark figures stay full-width and scale as native vector paths. */
+#benchmark .anatomy-figures{grid-template-columns:minmax(0,1fr);gap:0}
+.vector-badge{flex:0 0 auto;padding:3px 8px;border:1px solid #cfe2df;border-radius:99px;color:#276b68;background:#f0f8f5;font-size:10px;font-weight:700;letter-spacing:.03em}
+.figure-dialog{max-height:92dvh}
+.figure-tools{display:flex;align-items:center;gap:20px;padding:12px 20px;border-bottom:1px solid #e3ecec;background:#f6faf9;flex-wrap:wrap}
+.figure-zoom{display:flex;align-items:center;gap:7px}
+.figure-zoom button{min-width:38px;min-height:38px;padding:5px 10px;border:1px solid var(--figure-control-border);border-radius:8px;background:#fff;color:var(--deep);font:600 15px var(--sans);cursor:pointer}
+.figure-zoom button:hover{background:#e7f2ef;border-color:#6d9f99}
+.figure-zoom button:disabled{opacity:.35;cursor:default}
+.figure-zoom output{min-width:44px;text-align:center;font-size:12px;font-variant-numeric:tabular-nums;color:var(--deep)}
+#figure-format-note{color:#607c80;font-size:11px}
+#figure-original{margin-left:auto;color:#276b68;font-size:12px;font-weight:600;white-space:nowrap}
+.figure-dialog .figure-scroll{max-height:calc(92dvh - 145px);padding:16px;overscroll-behavior:contain;background:white}
+.figure-canvas{width:100%}
+.figure-dialog .figure-scroll img{display:block;width:100%;min-width:0;max-width:none;height:auto}
+@media(max-width:600px){
+ .figure-tools{gap:9px;padding:10px 12px}
+ #figure-format-note{order:3;width:100%}
+ .figure-dialog .figure-scroll{max-height:calc(92dvh - 182px);padding:10px}
+ #figure-original{font-size:11px}
+ .vector-badge{font-size:9px}
+}

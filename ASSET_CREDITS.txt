@@ -2,7 +2,10 @@ ProfessionalBench website assets
 
 Manuscript and figures
 - Supplied by the project owner: humanlaya_professionalbench (35).pdf.
-- Figure panels 1–17 are faithful crops from that manuscript.
+- Figures 1–14 are displayed on the site; the complete manuscript includes Figures 1–17.
+- Figures 10–12 use vector paths extracted from manuscript pages 21–23 with Poppler.
+- Figure 12 replaces only raster decorative card backgrounds with SVG rectangles. Original labels, data, and chart geometry are retained.
+- Other figure assets are faithful raster crops from the manuscript.
 - The Humanlaya logo is the supplied project identity.
 
 Model provider icons

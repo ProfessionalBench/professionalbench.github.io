@@ -6,7 +6,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "The ProfessionalBench framework",
     "category": "design",
     "width": 1371,
-    "height": 420
+    "height": 420,
+    "visible": true
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "From real workflows to validated tasks",
     "category": "design",
     "width": 1427,
-    "height": 598
+    "height": 598,
+    "visible": true
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Model performance and efficiency",
     "category": "results",
     "width": 1453,
-    "height": 571
+    "height": 571,
+    "visible": true
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "What changes when work is pre-resolved?",
     "category": "results",
     "width": 1419,
-    "height": 468
+    "height": 468,
+    "visible": true
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Where professional workflows break down",
     "category": "results",
     "width": 1429,
-    "height": 384
+    "height": 384,
+    "visible": true
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Home-purchase planning: pass transitions",
     "category": "cases",
     "width": 1425,
-    "height": 821
+    "height": 821,
+    "visible": true
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Finance: repayment restructuring",
     "category": "cases",
     "width": 1408,
-    "height": 854
+    "height": 854,
+    "visible": true
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Law: trade-secret investigation",
     "category": "cases",
     "width": 1408,
-    "height": 787
+    "height": 787,
+    "visible": true
   },
   {
     "id": 9,
@@ -78,34 +86,41 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Healthcare: endocrine assessment",
     "category": "cases",
     "width": 1408,
-    "height": 852
+    "height": 852,
+    "visible": true
   },
   {
     "id": 10,
     "page": 21,
-    "src": "assets/taxonomy.webp",
+    "src": "assets/taxonomy.svg",
     "title": "The complete professional task taxonomy",
     "category": "design",
     "width": 1429,
-    "height": 600
+    "height": 600,
+    "format": "svg",
+    "visible": true
   },
   {
     "id": 11,
     "page": 22,
-    "src": "assets/distributions.webp",
+    "src": "assets/distributions.svg",
     "title": "Task and workflow distributions",
     "category": "design",
     "width": 1429,
-    "height": 605
+    "height": 605,
+    "format": "svg",
+    "visible": true
   },
   {
     "id": 12,
     "page": 23,
-    "src": "assets/resources.webp",
+    "src": "assets/resources.svg",
     "title": "Resources, deliverables, and rubrics",
     "category": "design",
     "width": 1429,
-    "height": 705
+    "height": 706,
+    "format": "svg",
+    "visible": true
   },
   {
     "id": 13,
@@ -114,7 +129,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Law: data-breach litigation defense",
     "category": "cases",
     "width": 1429,
-    "height": 824
+    "height": 824,
+    "visible": true
   },
   {
     "id": 14,
@@ -123,7 +139,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Healthcare: pathology consultation",
     "category": "cases",
     "width": 1429,
-    "height": 811
+    "height": 811,
+    "visible": true
   },
   {
     "id": 15,
@@ -132,7 +149,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Act compression in GDPval",
     "category": "design",
     "width": 1429,
-    "height": 604
+    "height": 604,
+    "visible": false
   },
   {
     "id": 16,
@@ -141,7 +159,8 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Act compression in ALE",
     "category": "design",
     "width": 1429,
-    "height": 609
+    "height": 609,
+    "visible": false
   },
   {
     "id": 17,
@@ -150,6 +169,7 @@ window.PROFESSIONAL_FIGURES = [
     "title": "Know compression in ALE",
     "category": "design",
     "width": 1429,
-    "height": 604
+    "height": 604,
+    "visible": false
   }
 ];

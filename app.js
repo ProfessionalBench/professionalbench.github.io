@@ -82,6 +82,24 @@
     const dlg=document.getElementById(id);
     dlg.showModal();document.body.style.overflow='hidden';
   }
+  const figureZoomLevels=[100,150,200,300,400,600];
+  let figureZoomIndex=0;
+  function zoomFigure(index, reset=false) {
+    const viewport=$('.figure-scroll');
+    const previous=figureZoomLevels[figureZoomIndex];
+    figureZoomIndex=Math.max(0,Math.min(index,figureZoomLevels.length-1));
+    const current=figureZoomLevels[figureZoomIndex];
+    const left=viewport.scrollLeft, top=viewport.scrollTop;
+    $('.figure-canvas').style.width=current+'%';
+    $('#figure-zoom-value').textContent=current+'%';
+    $('#figure-zoom-out').disabled=figureZoomIndex===0;
+    $('#figure-zoom-in').disabled=figureZoomIndex===figureZoomLevels.length-1;
+    viewport.scrollLeft=reset?0:(left+viewport.clientWidth/2)*current/previous-viewport.clientWidth/2;
+    viewport.scrollTop=reset?0:(top+viewport.clientHeight/2)*current/previous-viewport.clientHeight/2;
+  }
+  $('#figure-zoom-out').addEventListener('click',()=>zoomFigure(figureZoomIndex-1));
+  $('#figure-zoom-in').addEventListener('click',()=>zoomFigure(figureZoomIndex+1));
+  $('#figure-zoom-fit').addEventListener('click',()=>zoomFigure(0,true));
   async function copyCitation() {
     const text=D.meta.citation;
     try {
@@ -107,7 +125,11 @@
       $('#figure-dialog-title').textContent=target.dataset.figureTitle||'Paper figure';
       $('#figure-dialog-image').src=target.dataset.figure;
       $('#figure-dialog-image').alt=target.dataset.figureTitle||'ProfessionalBench paper figure';
+      $('#figure-original').href=target.dataset.figure;
+      const isVector=/\.svg(?:[?#]|$)|^data:image\/svg\+xml/.test(target.dataset.figure);
+      $('#figure-format-note').textContent=isVector?'Vector · zoom without blur':'Scroll to explore details';
       openDialog('figure-dialog');
+      zoomFigure(0,true);
     }
     if(target.closest('#navigation')){
       $('#navigation').classList.remove('is-open');$('.nav-toggle').setAttribute('aria-expanded','false');
