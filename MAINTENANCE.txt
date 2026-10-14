@@ -20,31 +20,30 @@ ProfessionalBench 网页维护
 - narrative.css：当前叙事顺序相关布局、开头动机、整行效率图和手机适配。
 - experience.css：品牌颜色、阴影与交互样式。
 - styles.css：原有基础样式。
-- experience.js：气泡图、案例切换、轨迹展示逻辑。
+- experience.js：效率气泡图与装饰交互。
+- replay.js / replay.css：真实案例回放与模型、文件、评语展示。
 - app.js：排行榜、排序、压缩实验切换、图示弹窗、引用复制。
 - data/benchmark-data.js：论文跑分与统计；同步修改 data/professionalbench-results.csv。
 - data/figures.js：论文图源文件、尺寸、页码清单；visible 标明网页是否展示。
-- data/case-studies.js：案例描述与轨迹接入位置。
+- data/case-studies.js：论文示例的历史描述；实际回放使用 cases/manifest.json。
 - assets/professionalbench-paper.pdf：当前用户提供的最新版论文；原文件完整保留。
 
-接入真实 case 轨迹
-1. 将经确认可公开的记录和交付物放入 cases/ 下。
-2. 找到 data/case-studies.js 对应的 finance / legal / healthcare 条目。
-3. 把 trajectory: null 替换成下列结构；网页自动显示步骤查看与播放控件：
-   trajectory: {
-     model: '实际运行模型名称',
-     steps: [
-       {
-         title: '实际步骤标题',
-         phase: 'Know',
-         summary: '实际执行内容或经过整理的操作摘要',
-         tool: '实际工具名称（可省略）',
-         evidence: [{label: '相关证据', href: 'cases/finance/evidence.html'}]
-       }
-     ]
-   }
-4. deliverables 中可增加 href: 'cases/finance/result.xlsx'，发布文件后自动出现查看入口。
-5. 目前 trajectory 为 null，站点明确显示 forthcoming，不存在虚构的运行轨迹。
+案例回放（2026-10-14）
+- 入口：#replays；三题为 Finance 8086、Legal 106276、Healthcare 115，各 7 个模型。
+- 论文 Figure 7 的金融重组图保持原文；回放金融案例使用 8086，与 Figure 6 对应。两个案例不得混称同一题。
+- index.html / replay.css / replay.js：独立案例卡片、原生 dialog、Task / Trajectory / Scores & failure points / Submitted files 四个页签。
+- cases/manifest.json：小体积索引。每条运行的 run.json 仅打开时加载，缓存于当前页面；文件下载保留提交原始字节。
+- cases/provenance.json：原日志 SHA-256、任务核对和脱敏统计。分数来自归档 verifier/result.json，无新评分。
+- export 使用完整留存对话消息、工具调用和返回；运行时 telemetry/config 不发布；标准轨迹的空记录不生成空事件。Kimi 的重复 reasoning 镜像只保留一份。不会把事后解释伪造为原始步骤。
+- Claude Code、Qwen 和 Kimi 使用原生会话，保留主代理与子代理；Codex / Gemini 使用标准轨迹。按原时间戳合并，支持单会话筛选。金融 Qwen 的标准 trajectory.json 只含一个子代理，因此改用原生主会话和五个子会话。
+- 事件数按原始记录格式统计，不能直接作为模型计算量的可比指标。
+- 支持播放/暂停、0.5–4 倍速、前后跳步、进度拖动、会话/类型筛选、全文搜索和指定事件链接。切换模型/页签、关闭弹窗、切换浏览器标签会停止播放。
+- 正项未命中与负项/门槛触发才列为失分点；未触发的零权重 hurdle 不列为失败。展示原 grader 评语，不自动添加根因结论或 Professional Pass 标签。
+- 提交文件提供文字预览和原件下载。DOCX 预览为正文文字抽取，不冒充原排版；金融 Qwen 的空输出单独说明。
+- 更新数据：python3 scripts/export_cases.py --workspace /path/to/ICLR-0
+- 导出器在 21 条运行中逐一核对题面、分数、文件哈希，并剔除配置/遥测、脱敏凭据及本机用户名。导出器不调用外部模型、不重跑 solver、不重评。
+- 本地测试：npm install，然后 npm test。jsdom 只用于开发测试，GitHub Pages 无构建及运行时依赖。
+- 测试覆盖 21 条运行 × 4 视图、播放/暂停/终点/变速、筛选、空结果、空交付、异步模型切换、加载失败重试和内容转义。
 
 数据定义
 - 气泡图横轴为 min/task，纵轴为 Outcome Score，圆面积正比于 USD/task。

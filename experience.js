@@ -115,58 +115,6 @@
   $$('[data-eff-domain]').forEach(b=>b.addEventListener('click',()=>{bubble.domain=b.dataset.effDomain;renderBubble();}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&bubble.pinned){bubble.pinned=null;updateModel();}});
 
-  // Case evidence is data-driven. No synthetic trace is shown when a run has not been released.
-  const caseState={id:cases[0].id,tab:'trajectory',step:0,playing:false};
-  let playback=0;
-  function stopPlayback(){clearTimeout(playback);caseState.playing=false;}
-  function currentCase(){return cases.find(c=>c.id===caseState.id)||cases[0];}
-  function renderCase(){
-    const c=currentCase(), panel=$('#case-panel');
-    $$('[data-case]').forEach(b=>{const chosen=b.dataset.case===c.id;b.classList.toggle('selected',chosen);b.setAttribute('aria-pressed',String(chosen));});
-    $$('[data-case-tab]').forEach(b=>{const chosen=b.dataset.caseTab===caseState.tab;b.setAttribute('aria-selected',String(chosen));b.tabIndex=chosen?0:-1;});
-    panel.setAttribute('aria-labelledby','case-tab-'+caseState.tab);
-    if(caseState.tab==='trajectory'){
-      const steps=c.trajectory?.steps;
-      if(!steps?.length){
-        panel.innerHTML=`<div class="trace-empty"><div class="trace-route" aria-hidden="true"><span>K</span><i></i><span>A</span><i></i><span>C</span></div><h4>A closer look, coming soon.</h4><p>Step-by-step agent actions, tool calls, and supporting evidence for this case will appear here when the trajectory is released.</p><a href="#paper-figure-${c.id==='finance'?7:c.id==='legal'?8:9}">Explore the paper’s task example ↗</a></div>`;
-      }else{
-        caseState.step=Math.min(caseState.step,steps.length-1);
-        const step=steps[caseState.step];
-        panel.innerHTML=`<p class="case-panel-note">${esc(c.trajectory.model||'Released run')} · ${caseState.step+1} / ${steps.length} steps</p><article class="trace-step"><small>${esc(step.phase)}${step.tool?' · '+esc(step.tool):''}</small><h4>${esc(step.title)}</h4><p>${esc(step.summary)}</p>${(step.evidence||[]).filter(e=>safeLocal(e.href)).map(e=>`<a href="${esc(e.href)}" target="_blank" rel="noopener">${esc(e.label)} ↗</a>`).join('')}</article><div class="trace-player-controls"><button type="button" data-trace="previous" ${caseState.step===0?'disabled':''}>← Previous</button><button type="button" data-trace="play">${caseState.playing?'Pause':'Play'}</button><button type="button" data-trace="next" ${caseState.step===steps.length-1?'disabled':''}>Next →</button></div>`;
-      }
-    }else if(caseState.tab==='deliverables'){
-      panel.innerHTML=`<h4 class="case-panel-title">Expected deliverables</h4><p class="case-panel-note">Requirements from the manuscript. Agent-generated output files will be linked here with the released run.</p><div class="deliverable-list">${c.deliverables.map(d=>`<div class="deliverable-item"><span class="file-type">${esc(d.format)}</span><div><strong>${esc(d.title)}</strong><small>${esc(d.description)}</small>${safeLocal(d.href)?`<a href="${esc(d.href)}" target="_blank" rel="noopener">Open file ↗</a>`:''}</div></div>`).join('')}</div>`;
-    }else{
-      panel.innerHTML=`<h4 class="case-panel-title">Responsibility-aligned evaluation</h4><p class="case-panel-note">The task’s acceptance criteria connect professional responsibilities to observable evidence. Run-level rubric verdicts will appear with the released trajectory.</p><div class="evaluation-preview">${Object.entries(c.responsibilities).map(([key,value])=>`<div><b>${esc(key)}</b><p>${esc(value)}</p></div>`).join('')}</div>`;
-    }
-  }
-  function scheduleStep(){
-    clearTimeout(playback);
-    if(!caseState.playing)return;
-    playback=setTimeout(()=>{
-      const steps=currentCase().trajectory?.steps||[];
-      if(caseState.step>=steps.length-1){stopPlayback();renderCase();return;}
-      caseState.step++;renderCase();scheduleStep();
-    },3500);
-  }
-  $$('[data-case]').forEach(b=>b.addEventListener('click',()=>{stopPlayback();caseState.id=b.dataset.case;caseState.step=0;renderCase();}));
-  $$('[data-case-tab]').forEach(b=>b.addEventListener('click',()=>{stopPlayback();caseState.tab=b.dataset.caseTab;renderCase();}));
-  $('.case-tabs').addEventListener('keydown',e=>{
-    if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
-    e.preventDefault();const tabs=$$('[data-case-tab]'),i=tabs.indexOf(document.activeElement);
-    const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
-    tabs[next].click();tabs[next].focus();
-  });
-  $('#case-panel').addEventListener('click',e=>{
-    const control=e.target.closest('[data-trace]');if(!control)return;
-    const steps=currentCase().trajectory?.steps||[];if(!steps.length)return;
-    if(control.dataset.trace==='play'){
-      if(caseState.playing)stopPlayback();else{caseState.playing=true;if(caseState.step===steps.length-1)caseState.step=0;scheduleStep();}
-    }else{stopPlayback();caseState.step=Math.max(0,Math.min(steps.length-1,caseState.step+(control.dataset.trace==='next'?1:-1)));}
-    renderCase();
-    $(`[data-trace="${control.dataset.trace}"]`)?.focus();
-  });
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopPlayback();if(caseState.tab==='trajectory')renderCase();}});
   // Gentle pointer response stays decorative and turns off for reduced motion/touch.
   const hero=$('.hero-centered');
   let heroFrame=0;
@@ -178,5 +126,5 @@
   });
   hero.addEventListener('pointerleave',()=>{cancelAnimationFrame(heroFrame);hero.style.removeProperty('--orbit-x');hero.style.removeProperty('--orbit-y');});
   compactChart.addEventListener('change',renderBubble);
-  renderBubble();renderCase();
+  renderBubble();
 })();

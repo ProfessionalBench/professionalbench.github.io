@@ -16,6 +16,7 @@
 
 
 <link rel="canonical" href="https://professionalbench.github.io/">
+  <link rel="stylesheet" href="replay.css?v=20261014-replay-1">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -103,7 +104,12 @@
  <h3>Endocrine admission assessment</h3><p>Integrate clinical evidence into a staged assessment and verify consistency across the required files.</p>
  <button type="button" class="case-image" data-figure="assets/case-healthcare.svg" data-figure-title="Healthcare task example · Figure 9" aria-label="Enlarge Figure 9: Healthcare: endocrine assessment"><img src="assets/case-healthcare.svg" alt="Figure 9: task instructions, input evidence, KAC responsibilities and expected deliverables" loading="lazy" width="1500" height="908"><span>View full task figure ↗</span></button>
  <div class="case-card-foot"><span>4 inputs · 4 deliverables</span><a class="paper-link" data-page="16" href="assets/professionalbench-paper.pdf#page=16" target="_blank" rel="noopener">Paper ↗</a></div>
- </article></div><section class="case-workbench" aria-labelledby="trajectory-title"><div class="workbench-intro"><div><h3 id="trajectory-title">Inside a professional run.</h3></div><span class="release-tag">Trajectory collection · forthcoming</span></div><div class="workbench-layout"><div class="case-selector" role="group" aria-label="Select a case"><button type="button" data-case="finance" class="selected" aria-pressed="true"><span>Finance</span><strong>Repayment restructuring</strong><i aria-hidden="true">↗</i></button><button type="button" data-case="legal" aria-pressed="false"><span>Law</span><strong>Trade-secret investigation</strong><i aria-hidden="true">↗</i></button><button type="button" data-case="healthcare" aria-pressed="false"><span>Healthcare</span><strong>Endocrine assessment</strong><i aria-hidden="true">↗</i></button></div><div class="case-workspace"><div class="case-tabs" role="tablist" aria-label="Case evidence"><button type="button" role="tab" id="case-tab-trajectory" data-case-tab="trajectory" aria-selected="true" aria-controls="case-panel">Trajectory</button><button type="button" role="tab" id="case-tab-deliverables" data-case-tab="deliverables" aria-selected="false" aria-controls="case-panel" tabindex="-1">Deliverables</button><button type="button" role="tab" id="case-tab-evaluation" data-case-tab="evaluation" aria-selected="false" aria-controls="case-panel" tabindex="-1">Evaluation</button></div><div id="case-panel" role="tabpanel" aria-labelledby="case-tab-trajectory" tabindex="0"></div></div></div></section></section>
+ </article></div><section class="replay-explorer" id="replays" aria-labelledby="replay-heading">
+  <div class="replay-intro"><div><span class="replay-eyebrow">THE CASE EXPLORER</span><h3 id="replay-heading">Inside a professional run.</h3><p>Follow the recorded work. Compare seven models, inspect their submissions, and read the rubric verdicts behind each score.</p></div><span class="replay-edition">3 tasks <span>×</span> 7 models</span></div>
+  <div id="replay-cards" class="replay-cards" aria-live="polite"><p>Loading recorded cases…</p></div>
+  <p class="replay-caption">Original Unified runs · Full retained conversations, including recorded subagent sessions · No new scoring</p>
+  <noscript><p>Enable JavaScript for the interactive replay, or <a href="cases/manifest.json">download the case index</a>.</p></noscript>
+</section></section>
 
 <section class="section construction-section" id="construction" aria-labelledby="construction-title"><div class="wrap"><div class="section-heading"><div><h2 id="construction-title">From real workflows<br>to validated tasks.</h2></div><p class="section-aside">Experts map source workflows, recover missing Know–Act–Close responsibilities, and jointly validate task packages and rubrics. Independent review and end-to-end smoke tests complete the process.</p></div><figure class="paper-figure editorial-figure " id="paper-figure-2"><button class="figure-button" type="button" data-figure="assets/construction.svg" data-figure-title="Figure 2 · From real workflows to validated tasks" aria-label="Enlarge Figure 2: From real workflows to validated tasks"><img src="assets/construction.svg" alt="Figure 2: Expert-guided construction preserves the work, then validates tasks and their acceptance criteria." loading="lazy" decoding="async" width="1500" height="629"><span class="zoom-chip" aria-hidden="true">↗</span></button><figcaption><span>Expert-guided construction preserves the work, then validates tasks and their acceptance criteria.</span><a class="paper-link" data-page="4" href="assets/professionalbench-paper.pdf#page=4" target="_blank" rel="noopener">Paper ↗</a></figcaption></figure></div></section>
 
@@ -132,6 +138,21 @@
 <script src="data/benchmark-data.js?v=20261014-paper-palette"></script>
 <script src="app.js?v=20261014-paper-palette"></script>
 <script src="data/case-studies.js?v=20261014-paper-palette"></script>
-<script src="experience.js?v=20261014-paper-palette"></script>
+<script src="experience.js?v=20261014-replay-1"></script>
+<dialog id="replay-dialog" class="replay-dialog" aria-labelledby="replay-title">
+  <div class="replay-shell">
+    <header class="replay-head"><div><span id="replay-kicker" class="replay-eyebrow"></span><h2 id="replay-title"></h2><p id="replay-subtitle"></p></div><button id="replay-close" class="replay-close" type="button" aria-label="Close case replay">×</button></header>
+    <div id="replay-models" class="replay-models" role="group" aria-label="Choose a model"></div>
+    <div class="replay-nav"><div role="tablist" aria-label="Case views" id="replay-tabs">
+      <button id="replay-tab-task" type="button" role="tab" data-replay-tab="task" aria-controls="replay-body">Task</button>
+      <button id="replay-tab-trajectory" type="button" role="tab" data-replay-tab="trajectory" aria-controls="replay-body">Trajectory</button>
+      <button id="replay-tab-results" type="button" role="tab" data-replay-tab="results" aria-controls="replay-body">Scores &amp; failure points</button>
+      <button id="replay-tab-files" type="button" role="tab" data-replay-tab="files" aria-controls="replay-body">Submitted files</button>
+    </div><button id="replay-link" type="button">Copy link ↗</button></div>
+    <div id="replay-body" class="replay-body" role="tabpanel" tabindex="0"></div>
+    <footer class="replay-foot"><span>Recorded benchmark run · Original language preserved · Playback does not execute tools</span><span id="replay-live" role="status" aria-live="polite"></span></footer>
+  </div>
+</dialog>
+<script src="replay.js?v=20261014-replay-1" defer></script>
 </body>
 </html>

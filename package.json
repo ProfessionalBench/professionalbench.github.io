@@ -1,0 +1,6 @@
+{
+  "name": "professionalbench-site",
+  "private": true,
+  "scripts": {"test": "node --test scripts/test_replay.cjs"},
+  "devDependencies": {"jsdom": "30.1.0"}
+}
