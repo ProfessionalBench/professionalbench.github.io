@@ -54,6 +54,11 @@ test('21 runs retain matching scores, valid evidence links and submitted file ha
       assert.equal(data.events[0].id,1);
       assert.equal(data.events.at(-1).id,data.events.length);
       assert.ok(data.events.every(e => e.source && e.blocks.length));
+      for (const e of data.events) for (const b of e.blocks) {
+        for (const match of (b.text || '').matchAll(/\[Recorded image: (cases\/media\/[^\]]+)\]/g)) {
+          assert.ok(fs.statSync(path.join(root,match[1])).size > 0, 'recorded images contain actual bytes');
+        }
+      }
       for (const f of data.files) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.href))).digest('hex'),f.sha256);
     }
   }

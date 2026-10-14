@@ -55,6 +55,8 @@ class Content:
                 header, value = value.split(",", 1)
                 mime = header[5:].split(";")[0]
             data = base64.b64decode(value, validate=True)
+            if not data:
+                return "[No image bytes retained in this observation]"
             ext = {"image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/gif": "gif"}.get(mime)
             if not ext:
                 return "[Embedded binary omitted from text replay]"
@@ -83,7 +85,7 @@ class Content:
             return "\n".join(self.text(v) for v in value)
         if isinstance(value, dict):
             if value.get("type") in ("image", "image_url"):
-                source = value.get("source") or value.get("image_url") or value
+                source = value.get("source") or value.get("image_url") or value.get("imageUrl") or value
                 if isinstance(source, str):
                     result = self.image(source)
                 else:
