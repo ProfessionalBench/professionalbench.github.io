@@ -27,13 +27,21 @@
 .section-aside{font-size:15px;line-height:1.85}
 #efficiency .section-heading,#efficiency>.paper-figure{max-width:1180px;margin-left:auto;margin-right:auto}
 #efficiency .efficiency-card{padding:24px;background:radial-gradient(ellipse at 10% 30%,#eff7f4,transparent 60%),#fff}
+#efficiency .efficiency-toolbar{flex-wrap:wrap}
+.bubble-tour{display:flex;align-items:center;gap:12px;margin-left:auto;white-space:nowrap}
+#bubble-tour-state{font-size:11px;color:#607b84;font-variant-numeric:tabular-nums;min-width:123px}
+#bubble-tour-toggle{border:1px solid #bfd4d0;border-radius:20px;background:#f2f8f5;color:var(--deep);padding:8px 13px;font-size:11px;min-height:36px}
+#bubble-tour-toggle:hover{background:#e3efe9;border-color:#82ada3}
+#bubble-tour-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
 #efficiency .efficiency-layout{grid-template-columns:minmax(0,1fr);gap:14px}
 #efficiency .bubble-main{width:100%;max-width:1000px;margin-inline:auto}
 #efficiency .bubble-main svg{width:100%;height:auto}
 #efficiency .bubble-meta{font-size:12px;padding:6px 14px 2px}
-#efficiency .bubble-node.is-dimmed .bubble-orb{opacity:.83}
+#efficiency .bubble-node.is-dimmed .bubble-orb{opacity:.65}
 #efficiency .bubble-orb{stroke-width:1.8}
-#efficiency .bubble-node.is-active .bubble-orb{stroke-width:3}
+#efficiency .bubble-node.is-active .bubble-orb{opacity:1;stroke:#31586a;stroke-width:3;filter:drop-shadow(0 7px 10px #07384b40)}
+#efficiency .bubble-node.is-active .bubble-glow{opacity:.85;stroke-width:2.5}
+#efficiency .bubble-node.is-active .bubble-dot{fill:#fff;stroke:#31586a;stroke-width:1.8}
 #efficiency .grid-line{stroke:#d5e3e2;stroke-dasharray:2 5}
 #efficiency .axis-text{font-size:13px;fill:#56717a}
 #efficiency .axis-title{font-size:13px;fill:#3d5c66}
@@ -50,6 +58,7 @@
 #efficiency .inspector-metrics dd{font-size:20px}
 #efficiency .bubble-legend{gap:9px;justify-content:center;margin-top:22px}
 #efficiency .bubble-legend button{font-size:12px;gap:8px;padding:9px 12px}
+#efficiency .bubble-legend button.selected{background:#e0eee8;border-color:#699e93;box-shadow:0 0 0 1px #699e9333}
 .legend-swatch{width:9px;height:9px;background:var(--swatch);border-radius:50%;flex:none}
 #efficiency .source-line{font-size:11px;justify-content:center;margin-top:18px}
 #efficiency .axis-control,#efficiency .axis-control select{font-size:12px}
@@ -79,6 +88,7 @@
  .snapshot-note{font-size:13px;text-align:left}
  .editorial-figure figcaption{font-size:11px}
  #efficiency .efficiency-card{padding:17px 12px}
+ .bubble-tour{width:100%;justify-content:space-between}
  #efficiency .bubble-meta{font-size:10px;padding-inline:0;gap:6px}
  #efficiency .axis-text,#efficiency .axis-title{font-size:11px}
  #efficiency .model-inspector{padding:16px;gap:16px 12px}

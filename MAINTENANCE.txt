@@ -5,13 +5,14 @@ ProfessionalBench 网页维护
 发布分支：main；GitHub Pages 使用 main 的根目录。
 
 本次改版
-- 居中标题、Humanlaya 深海蓝与浅青背景；没有自动轮播。
+- 居中标题、Humanlaya 深海蓝与浅青背景。
 - 阅读顺序：简短 Motivation / Know–Act–Close → Figure 1 → 统计 → Results & Efficiency → 框架详解 → 小实验 → Showcases → Construction → 任务分类。
 - Construction 作为独立可见章节，直接放在 Three domains 任务分类前；没有折叠。移除独立 Evaluation、章节编号等重复小字。
 - 页面展示 13 张论文图：Figure 1、2、4–14。移除与交互效率图重复的 Figure 3，以及 Beyond one benchmark 和图示索引。原论文仍完整保留。
 - 页面展示的 13 张论文图均为 SVG 矢量图，无嵌入位图；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
 - 少量栅格装饰已矢量化：Figure 1 的循环箭头、Figure 2 的层级图与阴影、Figure 5 的色条、Figure 12 的卡片底色。保留原始图表内容和数据。
-- 效率气泡图使用 Table 2：横轴固定为耗时、纵轴为 Outcome Score、圆面积正比于 cost；横轴范围随领域自动适配。模型的跑分条与气泡统一使用论文图的低饱和七色配色（GPT 鼠尾草绿、Claude 雾蓝、Gemini 薰衣草紫、DeepSeek 沙金、GLM 豆沙粉、Qwen 青绿、Kimi 杏色），详情位于图下方，支持领域切换、靠近高亮、点击固定和键盘选择。
+- 效率气泡图使用 Table 2：横轴固定为耗时、纵轴为 Outcome Score、圆面积正比于 cost；横轴范围随领域自动适配。模型的跑分条与气泡统一使用论文图的低饱和七色配色（GPT 鼠尾草绿、Claude 雾蓝、Gemini 薰衣草紫、DeepSeek 沙金、GLM 豆沙粉、Qwen 青绿、Kimi 杏色），详情位于图下方，支持领域切换、靠近高亮和键盘选择。
+- 气泡半径统一增大约 24%，选中时增加外环、深色描边和前景层级，不改变面积比例或圆心坐标。图表可见时每 3.5 秒按模型顺序高亮；鼠标进入卡片或键盘操作时暂停，离开后从当前模型继续。提供手动暂停/恢复；触屏点选后暂停，减少动态效果偏好下默认暂停；图表离开视口或浏览器标签隐藏时停止计时。
 - 排行榜与交互图使用本地模型厂家 SVG 图标。
 - 现有三组案例保留，增加轨迹、交付物、评估结果展示区。
 

@@ -11,9 +11,11 @@
   const fixed = (v, digits = 2) => Number(v).toFixed(digits);
   const domains = {overall:'Overall', finance:'Finance', legal:'Law', healthcare:'Healthcare'};
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const safeLocal = value => typeof value === 'string' && /^(assets|cases)\/[a-zA-Z0-9_./%\-]+$/.test(value) && !value.includes('..') ? value : null;
   const svg = $('#bubble-chart');
-  const bubble = {domain:'overall', active:'gpt', pinned:null, points:[]};
+  const card = $('#efficiency .efficiency-card'), legend = $('#bubble-legend');
+  const bubble = {domain:'overall', active:'gpt', points:[]};
+  const tour = {paused:reduced.matches, hovered:false, keyboard:false, visible:!('IntersectionObserver' in window), timer:0};
+  const tourDelay = 3500;
   const bounds = {left:76, right:1054, top:64, bottom:432};
   const compactChart = window.matchMedia('(max-width: 600px)');
   let plotWidth = 1100;
@@ -52,7 +54,7 @@
     bubble.points = D.models.map(m => {
       const r = m.results[bubble.domain];
       // A = πr²: using sqrt(cost) makes circle area proportional to USD per task.
-      return {id:m.id, cx:x(r.delay), cy:y(r.score), radius:Math.sqrt(r.cost)*21*(compact ? .52 : 1)};
+      return {id:m.id, cx:x(r.delay), cy:y(r.score), radius:Math.sqrt(r.cost)*26*(compact ? .52 : 1)};
     });
     const circles = [...bubble.points].sort((a,b)=>b.radius-a.radius).map(p=>{
       const m=D.models.find(m=>m.id===p.id),r=m.results[bubble.domain];
@@ -69,51 +71,99 @@
     $$('.bubble-node',svg).forEach(node=>{
       node.classList.toggle('is-active',node.dataset.model===m.id);
       node.classList.toggle('is-dimmed',node.dataset.model!==m.id);
-      node.setAttribute('aria-pressed',String(node.dataset.model===bubble.pinned));
+      node.setAttribute('aria-pressed',String(node.dataset.model===m.id));
     });
     $$('[data-select-model]').forEach(b=>{
       b.classList.toggle('selected',b.dataset.selectModel===m.id);
-      b.setAttribute('aria-pressed',String(b.dataset.selectModel===bubble.pinned));
+      b.setAttribute('aria-pressed',String(b.dataset.selectModel===m.id));
     });
+    // Keep the selected bubble visible when circles overlap; its data radius stays fixed.
+    const activeNode=$(`.bubble-node[data-model="${m.id}"]`,svg);
+    if(document.activeElement!==activeNode)$('#bubble-nodes').append(activeNode);
     $('#bubble-guides').innerHTML=`<path class="bubble-crosshair" d="M ${bounds.left} ${p.cy} H ${p.cx} V ${bounds.bottom}"/>`;
     const labelWidth=Math.max(108,m.name.length*6.5+22),labelX=Math.min(plotWidth-5-labelWidth,Math.max(5,p.cx-labelWidth/2));
     const labelY=Math.max(27,p.cy-p.radius-37);
     $('#bubble-callout').innerHTML=`<rect x="${labelX}" y="${labelY}" width="${labelWidth}" height="28" rx="9"/><text x="${labelX+labelWidth/2}" y="${labelY+18}" text-anchor="middle">${esc(m.name)}</text>`;
-    $('#model-inspector').innerHTML=`<div class="inspector-heading"><img src="${esc(assetUrl(m.logo))}" alt="${esc(m.company)}"><div><h3>${esc(m.name)}</h3><p>${esc(m.harness)}${bubble.pinned?' · pinned':''}</p></div></div><div class="inspector-score"><strong>${fixed(r.score)}</strong><span>Outcome Score</span></div><dl class="inspector-metrics"><div><dt>Cost / task</dt><dd>$${fixed(r.cost)}</dd></div><div><dt>Time / task</dt><dd>${fixed(r.delay)}<small> min</small></dd></div><div><dt>Professional Pass</dt><dd>${fixed(r.pass,1)}%</dd></div></dl>`;
+    $('#model-inspector').innerHTML=`<div class="inspector-heading"><img src="${esc(assetUrl(m.logo))}" alt="${esc(m.company)}"><div><h3>${esc(m.name)}</h3><p>${esc(m.harness)}</p></div></div><div class="inspector-score"><strong>${fixed(r.score)}</strong><span>Outcome Score</span></div><dl class="inspector-metrics"><div><dt>Cost / task</dt><dd>$${fixed(r.cost)}</dd></div><div><dt>Time / task</dt><dd>${fixed(r.delay)}<small> min</small></dd></div><div><dt>Professional Pass</dt><dd>${fixed(r.pass,1)}%</dd></div></dl>`;
+    updateTourControl();
   }
-  function activateModel(id, pin=false) {
+  function activateModel(id) {
     if(!D.models.some(m=>m.id===id))return;
-    if(pin)bubble.pinned=bubble.pinned===id?null:id;
-    if(bubble.active===id&&!pin)return;
+    if(bubble.active===id)return;
     bubble.active=id;updateModel();
   }
+  function updateTourControl() {
+    const following=tour.hovered||tour.keyboard;
+    $('#bubble-tour-state').textContent=`${tour.paused?'Paused':following?'Your selection':'Auto highlight'} · ${D.models.findIndex(m=>m.id===bubble.active)+1} / ${D.models.length}`;
+    $('#bubble-tour-toggle').textContent=tour.paused?'▶ Auto tour':'Ⅱ Pause tour';
+    $('#bubble-tour-toggle').setAttribute('aria-pressed',String(!tour.paused));
+  }
+  function scheduleTour() {
+    clearTimeout(tour.timer);
+    updateTourControl();
+    if(tour.paused||tour.hovered||tour.keyboard||!tour.visible||document.hidden)return;
+    tour.timer=setTimeout(()=>{
+      const next=(D.models.findIndex(m=>m.id===bubble.active)+1)%D.models.length;
+      activateModel(D.models[next].id);scheduleTour();
+    },tourDelay);
+  }
   let pointerFrame=0;
+  function pointerTakesOver(event) {
+    if(event.pointerType==='touch')return;
+    if(!tour.hovered){tour.hovered=true;scheduleTour();}
+  }
+  card.addEventListener('pointerenter',pointerTakesOver);
+  card.addEventListener('pointermove',pointerTakesOver);
+  card.addEventListener('pointerleave',()=>{cancelAnimationFrame(pointerFrame);tour.hovered=false;scheduleTour();});
+  card.addEventListener('pointerdown',event=>{
+    if(event.pointerType==='touch'&&!event.target.closest('#bubble-tour-toggle'))tour.paused=true;
+    tour.keyboard=false;scheduleTour();
+  });
+  card.addEventListener('focusin',event=>{
+    if(event.target.matches(':focus-visible')){tour.keyboard=true;scheduleTour();}
+  });
+  card.addEventListener('focusout',event=>{
+    if(!card.contains(event.relatedTarget)){tour.keyboard=false;scheduleTour();}
+  });
   svg.addEventListener('pointermove',event=>{
-    if(bubble.pinned||event.pointerType==='touch')return;
+    if(event.pointerType==='touch')return;
+    pointerTakesOver(event);
     cancelAnimationFrame(pointerFrame);
     const clientX=event.clientX,clientY=event.clientY;
     pointerFrame=requestAnimationFrame(()=>{
-      if(bubble.pinned)return;
+      if(!tour.hovered)return;
       const matrix=svg.getScreenCTM();if(!matrix)return;
       const point=new DOMPoint(clientX,clientY).matrixTransform(matrix.inverse());
       const nearest=bubble.points.map(p=>({...p,distance:Math.hypot(point.x-p.cx,point.y-p.cy)})).sort((a,b)=>a.distance-b.distance)[0];
       if(nearest&&nearest.distance<nearest.radius+36)activateModel(nearest.id);
     });
   });
-  svg.addEventListener('click',e=>{const node=e.target.closest('[data-model]');if(node)activateModel(node.dataset.model,true);});
-  svg.addEventListener('focusin',e=>{const node=e.target.closest('[data-model]');if(node&&!bubble.pinned)activateModel(node.dataset.model);});
+  svg.addEventListener('click',e=>{const node=e.target.closest('[data-model]');if(node)activateModel(node.dataset.model);});
+  svg.addEventListener('focusin',e=>{const node=e.target.closest('[data-model]');if(node)activateModel(node.dataset.model);});
   svg.addEventListener('keydown',e=>{
     const node=e.target.closest('[data-model]');if(!node)return;
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();activateModel(node.dataset.model,true);}
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();activateModel(node.dataset.model);}
     if(['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','Home','End'].includes(e.key)){
-      e.preventDefault();const nodes=$$('.bubble-node',svg),i=nodes.indexOf(node);
+      e.preventDefault();const nodes=D.models.map(m=>$(`.bubble-node[data-model="${m.id}"]`,svg)),i=nodes.indexOf(node);
       const next=e.key==='Home'?0:e.key==='End'?nodes.length-1:(i+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+nodes.length)%nodes.length;
       nodes[next].focus();
     }
   });
-  $('#bubble-legend').addEventListener('click',e=>{const b=e.target.closest('[data-select-model]');if(b)activateModel(b.dataset.selectModel,true);});
-  $$('[data-eff-domain]').forEach(b=>b.addEventListener('click',()=>{bubble.domain=b.dataset.effDomain;renderBubble();}));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&bubble.pinned){bubble.pinned=null;updateModel();}});
+  for(const type of ['pointerover','focusin','click'])legend.addEventListener(type,e=>{
+    const b=e.target.closest('[data-select-model]');if(b)activateModel(b.dataset.selectModel);
+  });
+  $$('[data-eff-domain]').forEach(b=>b.addEventListener('click',()=>{bubble.domain=b.dataset.effDomain;renderBubble();scheduleTour();}));
+  $('#bubble-tour-toggle').addEventListener('click',()=>{
+    tour.paused=!tour.paused;
+    // Explicitly resuming the tour takes effect immediately, even with button focus.
+    if(!tour.paused){tour.hovered=false;tour.keyboard=false;}
+    scheduleTour();
+  });
+  document.addEventListener('visibilitychange',scheduleTour);
+  reduced.addEventListener('change',()=>{if(reduced.matches)tour.paused=true;scheduleTour();});
+  if('IntersectionObserver' in window)new IntersectionObserver(entries=>{
+    tour.visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.15;scheduleTour();
+  },{threshold:[0,.15]}).observe(card);
 
   // Gentle pointer response stays decorative and turns off for reduced motion/touch.
   const hero=$('.hero-centered');
@@ -127,4 +177,5 @@
   hero.addEventListener('pointerleave',()=>{cancelAnimationFrame(heroFrame);hero.style.removeProperty('--orbit-x');hero.style.removeProperty('--orbit-y');});
   compactChart.addEventListener('change',renderBubble);
   renderBubble();
+  scheduleTour();
 })();
