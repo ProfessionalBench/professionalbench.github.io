@@ -4,6 +4,13 @@ ProfessionalBench 网页维护
 仓库：https://github.com/ProfessionalBench/professionalbench.github.io
 发布分支：main；GitHub Pages 使用 main 的根目录。
 
+论文同步（2026-10-14，版本 39）
+- 使用用户提供的 humanlaya_professionalbench (39).pdf 原始字节替换站点 PDF；29 页，论文日期为 October 14, 2026。
+- Table 2 全部 112 个指标逐项核对。金融 / 总分分别更新为：GPT-5.6 Sol 60.83 / 63.64、Claude Opus 5 63.57 / 62.89、Gemini 3.8 Flash 42.10 / 46.59。排行榜、柱状图、气泡图和下载 CSV 同步。
+- 网页评分说明与新版 §3.5 对齐：关键要求通过 hurdle 实施，触发即归零且不能通过；Professional Pass 阈值为 85。
+- 所有展示的论文图所在页均与前版逐像素一致；图表、压缩实验、失败归因与页码链接已核对。引用日期更新为 October 14, 2026，PDF、数据脚本和 CSV 链接使用版本参数刷新缓存。
+- 案例回放继续展示原始逐题 grader 分数；新版论文没有提供新的逐题评分，不能用汇总分数变动推算替换。
+
 本次改版
 - 居中标题、Humanlaya 深海蓝与浅青背景。
 - 阅读顺序：简短 Motivation / Know–Act–Close → Figure 1 → 统计 → Results & Efficiency → 框架详解 → 小实验 → Showcases → Construction → 任务分类。

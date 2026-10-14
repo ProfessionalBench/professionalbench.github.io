@@ -3,13 +3,13 @@ window.PROFESSIONAL_BENCH = {
     "title": "ProfessionalBench",
     "paperTitle": "ProfessionalBench: Benchmarking AI Agents on Real-World Professional Workflows",
     "institution": "Humanlaya Data",
-    "manuscriptDate": "2026-10-13",
-    "paper": "assets/professionalbench-paper.pdf",
+    "manuscriptDate": "2026-10-14",
+    "paper": "assets/professionalbench-paper.pdf?v=20261014-paper39",
     "repository": "https://github.com/ProfessionalBench",
     "evaluationTasks": 90,
     "tasksPerDomain": 30,
-    "source": "Supplied manuscript, October 13, 2026. Table 2: p. 6; Table 3: p. 8; Tables 1 and 5: pp. 5 and 15; Table 6: p. 16.",
-    "citation": "@misc{humanlaya2026professionalbench,\n  title  = {ProfessionalBench: Benchmarking AI Agents on\n            Real-World Professional Workflows},\n  author = {{Humanlaya Data}},\n  year   = {2026},\n  month  = oct,\n  note   = {Manuscript, October 13, 2026}\n}"
+    "source": "Supplied manuscript, October 14, 2026. Table 2: p. 6; Table 3: p. 8; Tables 1 and 5: pp. 5 and 15; Table 6: p. 16.",
+    "citation": "@misc{humanlaya2026professionalbench,\n  title  = {ProfessionalBench: Benchmarking AI Agents on\n            Real-World Professional Workflows},\n  author = {{Humanlaya Data}},\n  year   = {2026},\n  month  = oct,\n  note   = {Manuscript, October 14, 2026}\n}"
   },
   "stats": {
     "tasks": 435,
@@ -32,7 +32,7 @@ window.PROFESSIONAL_BENCH = {
       "logo": "assets/logos/openai.svg",
       "results": {
         "finance": {
-          "score": 60.63,
+          "score": 60.83,
           "pass": 36.7,
           "delay": 5.38,
           "cost": 1.78
@@ -50,7 +50,7 @@ window.PROFESSIONAL_BENCH = {
           "cost": 1.76
         },
         "overall": {
-          "score": 63.57,
+          "score": 63.64,
           "pass": 33.3,
           "delay": 8.43,
           "cost": 2.67
@@ -68,7 +68,7 @@ window.PROFESSIONAL_BENCH = {
       "logo": "assets/logos/anthropic.svg",
       "results": {
         "finance": {
-          "score": 63.72,
+          "score": 63.57,
           "pass": 33.3,
           "delay": 14.78,
           "cost": 2.68
@@ -86,7 +86,7 @@ window.PROFESSIONAL_BENCH = {
           "cost": 2.86
         },
         "overall": {
-          "score": 62.94,
+          "score": 62.89,
           "pass": 32.2,
           "delay": 20.69,
           "cost": 3.34
@@ -104,7 +104,7 @@ window.PROFESSIONAL_BENCH = {
       "logo": "assets/logos/google-color.svg",
       "results": {
         "finance": {
-          "score": 41.91,
+          "score": 42.1,
           "pass": 13.3,
           "delay": 9.78,
           "cost": 0.81
@@ -122,7 +122,7 @@ window.PROFESSIONAL_BENCH = {
           "cost": 0.71
         },
         "overall": {
-          "score": 46.53,
+          "score": 46.59,
           "pass": 13.3,
           "delay": 11.94,
           "cost": 0.79
