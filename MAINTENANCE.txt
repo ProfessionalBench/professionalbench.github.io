@@ -4,7 +4,11 @@ ProfessionalBench 网页维护
 仓库：https://github.com/ProfessionalBench/professionalbench.github.io
 发布分支：main；GitHub Pages 使用 main 的根目录。
 
-论文同步（2026-10-14，版本 39）
+论文暂时撤下（2026-10-14）
+- 用户要求审核后再公开：已移除站点 PDF 文件、导航 / 首页 / 图注 / 页脚中的下载入口，meta.paper 设为 null。
+- 重新发布须由用户确认；论文备份仅保存在本地，不得随网站源文件自动上传。
+
+此前论文同步（2026-10-14，版本 39）
 - 使用用户提供的 humanlaya_professionalbench (39).pdf 原始字节替换站点 PDF；29 页，论文日期为 October 14, 2026。
 - Table 2 全部 112 个指标逐项核对。金融 / 总分分别更新为：GPT-5.6 Sol 60.83 / 63.64、Claude Opus 5 63.57 / 62.89、Gemini 3.8 Flash 42.10 / 46.59。排行榜、柱状图、气泡图和下载 CSV 同步。
 - 网页评分说明与新版 §3.5 对齐：关键要求通过 hurdle 实施，触发即归零且不能通过；Professional Pass 阈值为 85。
@@ -15,7 +19,7 @@ ProfessionalBench 网页维护
 - 居中标题、Humanlaya 深海蓝与浅青背景。
 - 阅读顺序：简短 Motivation / Know–Act–Close → Figure 1 → 统计 → Results & Efficiency → 框架详解 → 小实验 → Showcases → Construction → 任务分类。
 - Construction 作为独立可见章节，直接放在 Three domains 任务分类前；没有折叠。移除独立 Evaluation、章节编号等重复小字。
-- 页面展示 13 张论文图：Figure 1、2、4–14。移除与交互效率图重复的 Figure 3，以及 Beyond one benchmark 和图示索引。原论文仍完整保留。
+- 页面展示 13 张论文图：Figure 1、2、4–14。移除与交互效率图重复的 Figure 3，以及 Beyond one benchmark 和图示索引。论文 PDF 当前暂不公开。
 - 页面展示的 13 张论文图均为 SVG 矢量图，无嵌入位图；弹窗支持 100%–600% 放大、Fit 复位及打开原图。
 - 少量栅格装饰已矢量化：Figure 1 的循环箭头、Figure 2 的层级图与阴影、Figure 5 的色条、Figure 12 的卡片底色。保留原始图表内容和数据。
 - 效率气泡图使用 Table 2：横轴固定为耗时、纵轴为 Outcome Score、圆面积正比于 cost；横轴范围随领域自动适配。模型的跑分条与气泡统一使用论文图的低饱和七色配色（GPT 鼠尾草绿、Claude 雾蓝、Gemini 薰衣草紫、DeepSeek 沙金、GLM 豆沙粉、Qwen 青绿、Kimi 杏色），详情位于图下方，支持领域切换、靠近高亮和键盘选择。
@@ -34,7 +38,7 @@ ProfessionalBench 网页维护
 - data/benchmark-data.js：论文跑分与统计；同步修改 data/professionalbench-results.csv。
 - data/figures.js：论文图源文件、尺寸、页码清单；visible 标明网页是否展示。
 - data/case-studies.js：论文示例的历史描述；实际回放使用 cases/manifest.json。
-- assets/professionalbench-paper.pdf：当前用户提供的最新版论文；原文件完整保留。
+- 论文 PDF：已从发布文件中移除，待用户确认后恢复。
 
 案例回放（2026-10-14）
 - 入口：#replays；三题为 Finance 8086、Legal 106276、Healthcare 115，各 7 个模型。
@@ -58,7 +62,7 @@ ProfessionalBench 网页维护
 - 气泡图横轴为 min/task，纵轴为 Outcome Score，圆面积正比于 USD/task。
 - 半径按 sqrt(cost) 计算，桌面和手机分别采用统一比例；同一尺寸下可跨领域比较圆面积。
 - 圆心不因鼠标交互而移动，坐标始终对应原始数据。
-- 原论文 Figure 3 保留在完整 PDF 中，网页不再重复展示。
+- 网页不重复展示原论文 Figure 3；完整 PDF 当前不公开。
 - 435 是完整任务集；排行榜 overall 基于 90 个任务，单领域 30 个。
 - 所有结果是所附论文的静态快照。
 

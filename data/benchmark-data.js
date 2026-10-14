@@ -4,7 +4,7 @@ window.PROFESSIONAL_BENCH = {
     "paperTitle": "ProfessionalBench: Benchmarking AI Agents on Real-World Professional Workflows",
     "institution": "Humanlaya Data",
     "manuscriptDate": "2026-10-14",
-    "paper": "assets/professionalbench-paper.pdf?v=20261014-paper39",
+    "paper": null,
     "repository": "https://github.com/ProfessionalBench",
     "evaluationTasks": 90,
     "tasksPerDomain": 30,
