@@ -8,17 +8,22 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'cases/manifest.json
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
 async function harness(options = {}) {
-  const errors = [], requests = [], timers = new Map();
+  const errors = [], requests = [], timers = new Map(), frames = new Map(), scrolls = [];
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', e => errors.push(e));
   const dom = new JSDOM(fs.readFileSync(path.join(root,'index.html'),'utf8'), {url:'https://professionalbench.github.io/' + (options.hash || ''), runScripts:'outside-only', pretendToBeVisual:true, virtualConsole});
   const w = dom.window;
   w.Element.prototype.scrollIntoView = function() {};
+  w.Element.prototype.scrollTo = function(options) {scrolls.push({id:this.id,...options}); this.scrollTop = options.top;};
+  w.matchMedia = () => ({matches:!!options.reducedMotion});
+  w.performance.now = () => 0;
   w.HTMLDialogElement.prototype.showModal = function() {this.open = true;};
   w.HTMLDialogElement.prototype.close = function() {this.open = false; this.dispatchEvent(new w.Event('close'));};
   let sequence = 0;
   w.setTimeout = (callback, delay) => {const id = ++sequence; timers.set(id,{callback,delay}); return id;};
   w.clearTimeout = id => timers.delete(id);
+  w.requestAnimationFrame = callback => {const id = ++sequence; frames.set(id,callback); return id;};
+  w.cancelAnimationFrame = id => frames.delete(id);
   w.fetch = async url => {
     requests.push(url);
     if (options.fetch) {const value = await options.fetch(url); if (value) return value;}
@@ -35,7 +40,7 @@ async function harness(options = {}) {
   const $ = q => w.document.querySelector(q);
   const click = async q => {assert.ok($(q), q); $(q).click(); await flush();};
   const change = async (q,value,kind='change') => {$(q).value=value; $(q).dispatchEvent(new w.Event(kind,{bubbles:true})); await flush();};
-  return {w,$,click,change,errors,requests,timers,close:() => dom.window.close(),tick:async () => {const [id,timer] = timers.entries().next().value; timers.delete(id); timer.callback(); await flush();}};
+  return {w,$,click,change,errors,requests,timers,frames,scrolls,close:() => dom.window.close(),frame:time => {const [id,callback] = frames.entries().next().value; frames.delete(id); callback(time);},tick:async () => {const [id,timer] = timers.entries().next().value; timers.delete(id); timer.callback(); await flush();}};
 }
 
 test('21 runs retain matching scores, valid evidence links and submitted file hashes', () => {
@@ -119,7 +124,56 @@ test('playback speed, pause, end, restart, scrub and tab/close cleanup', async (
   await h.click('[data-action="play"]');
   await h.click('#replay-close');
   assert.equal(h.timers.size,0);
+  assert.equal(h.frames.size,0);
   assert.equal(h.$('#replay-dialog').open,false);
+  h.close();
+});
+
+test('Start opens dark playback at 1.5x; long content scrolls and user interaction pauses', async () => {
+  const h = await harness();
+  assert.match(h.$('[data-open-replay="legal"]').getAttribute('aria-label'), /^Start/);
+  await h.click('[data-open-replay="legal"]');
+  assert.equal(h.$('[data-replay-tab="trajectory"]').getAttribute('aria-selected'),'true');
+  assert.equal(h.$('#replay-speed').value,'1.5');
+  assert.equal(h.$('[data-action="play"]').getAttribute('aria-pressed'),'true');
+  assert.ok(h.$('#replay-dialog').classList.contains('replay-dark'));
+  assert.equal([...h.timers.values()][0].delay,2000);
+  await h.click('[data-action="play"]');
+  const detail = h.$('#replay-event-detail');
+  Object.defineProperty(detail,'scrollHeight',{value:1440});
+  Object.defineProperty(detail,'clientHeight',{value:440});
+  await h.click('[data-action="play"]');
+  assert.equal([...h.timers.values()][0].delay,10000);
+  h.frame(5000);
+  assert.ok(detail.scrollTop > 400 && detail.scrollTop < 500);
+  assert.equal(h.$('.replay-event-progress span').style.transform,'scaleX(0.5)');
+  detail.dispatchEvent(new h.w.WheelEvent('wheel',{bubbles:true}));
+  assert.equal(h.frames.size,0);
+  assert.equal(h.timers.size,0);
+  assert.equal(h.$('#replay-playback-status').textContent,'Paused');
+  await h.click('[data-action="next"]');
+  assert.equal(h.scrolls.at(-1).id,'replay-events');
+  assert.equal(h.scrolls.at(-1).behavior,'smooth');
+  await h.click('[data-replay-tab="task"]');
+  assert.equal(h.$('#replay-dialog').classList.contains('replay-dark'),false);
+  assert.deepEqual(h.errors,[]);
+  h.close();
+});
+
+test('shared links stay paused and reduced-motion playback avoids scrolling animation', async () => {
+  const h = await harness({hash:'#replay/legal/codex-gpt56/trajectory/1',reducedMotion:true});
+  await flush();
+  assert.equal(h.timers.size,0);
+  const detail = h.$('#replay-event-detail');
+  Object.defineProperty(detail,'scrollHeight',{value:1440});
+  Object.defineProperty(detail,'clientHeight',{value:440});
+  await h.click('[data-action="play"]');
+  h.frame(5000);
+  assert.equal(detail.scrollTop,0);
+  await h.tick();
+  assert.equal(h.scrolls.at(-1).behavior,'instant');
+  await h.click('#replay-close');
+  assert.equal(h.frames.size,0);
   h.close();
 });
 

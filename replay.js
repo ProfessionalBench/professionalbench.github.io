@@ -10,8 +10,9 @@
   const labels = {task:'Task', trajectory:'Trajectory', results:'Scores & failure points', files:'Submitted files'};
   const modelIds = {'codex-gpt56':'gpt','cc-opus5':'claude','kimi-k3':'kimi','qwen38-code':'qwen','gemini38-flash':'gemini','cc-deepseek':'deepseek','cc-glm':'glm'};
   const dialog = $('#replay-dialog'), body = $('#replay-body');
-  const state = {case:null, model:null, tab:'trajectory', run:null, index:0, session:'all', filter:'all', query:'', speed:1, playing:false, request:0, file:0, verdict:'failed', origin:null};
-  let manifest, timer;
+  const state = {case:null, model:null, tab:'trajectory', run:null, index:0, session:'all', filter:'all', query:'', speed:1.5, playing:false, autoplay:false, request:0, file:0, verdict:'failed', origin:null};
+  let manifest, timer, frame;
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const cache = new Map();
   const brand = id => (window.PROFESSIONAL_BENCH?.models || []).find(m => m.id === modelIds[id]);
   const logo = id => brand(id)?.logo ? `<img src="${esc(brand(id).logo)}" alt="" aria-hidden="true">` : '';
@@ -31,9 +32,11 @@
     return response.json();
   }
   function stop() {
-    clearTimeout(timer); state.playing = false;
+    clearTimeout(timer); cancelAnimationFrame(frame); state.playing = false; state.autoplay = false;
+    dialog.classList.remove('replay-playing');
     const button = $('[data-action="play"]', body);
     if (button) {button.textContent = '▶ Play'; button.setAttribute('aria-pressed', 'false');}
+    if ($('#replay-playback-status')) $('#replay-playback-status').textContent = 'Paused';
   }
   function setHash() {
     const hash = `#replay/${state.case.id}/${state.model}/${state.tab}/${state.index + 1}`;
@@ -42,15 +45,16 @@
   function drawCards() {
     $('#replay-cards').innerHTML = manifest.cases.map((c, index) => {
       const scores = c.runs.map(r => r.score);
-      return `<button type="button" class="replay-card replay-${c.id}" data-open-replay="${c.id}">
+      return `<button type="button" class="replay-card replay-${c.id}" data-open-replay="${c.id}" aria-label="Start ${esc(c.title)} replay">
         <span class="replay-card-top"><span>${esc(c.domain)} / ${esc(c.task_id)}</span><span>0${index + 1}</span></span>
         <strong>${esc(c.title)}</strong><span class="replay-card-summary">${esc(c.summary)}</span>
         <span class="replay-spark" aria-label="Seven model scores">${c.runs.map(r => `<i style="--height:${Math.max(3,r.score)}%;--model-color:${brand(r.model_id)?.color || '#4c8190'}" title="${esc(r.model)}: ${score(r.score)}"></i>`).join('')}</span>
-        <span class="replay-card-bottom"><span>7 recorded runs <small>Scores ${score(Math.min(...scores))}–${score(Math.max(...scores))}</small></span><b>Explore case <span aria-hidden="true">↗</span></b></span>
+        <span class="replay-card-bottom"><span>7 recorded runs <small>Scores ${score(Math.min(...scores))}–${score(Math.max(...scores))}</small></span><span class="replay-start"><span aria-hidden="true">▶</span> Start</span></span>
       </button>`;
     }).join('');
   }
   function drawHeader() {
+    dialog.classList.toggle('replay-dark', state.tab === 'trajectory');
     $('#replay-kicker').textContent = `${state.case.domain} · Task ${state.case.task_id} · Unified`;
     $('#replay-title').textContent = state.case.title;
     $('#replay-subtitle').textContent = state.case.summary;
@@ -58,12 +62,12 @@
     $$('[data-replay-tab]').forEach(b => {const on = b.dataset.replayTab === state.tab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;});
     body.setAttribute('aria-labelledby', 'replay-tab-' + state.tab);
   }
-  async function openCase(id, model, tab = 'task', index = 0) {
+  async function openCase(id, model, tab = 'task', index = 0, autoplay = false) {
     const c = manifest.cases.find(c => c.id === id);
     if (!c) return;
     stop();
     if (!dialog.open) {state.origin = document.activeElement; dialog.showModal(); document.body.classList.add('replay-is-open');}
-    Object.assign(state, {case:c, model:c.runs.some(r => r.model_id === model) ? model : c.default, tab:labels[tab] ? tab : 'trajectory', run:null, index:Math.max(0,index), session:'all', filter:'all', query:'', file:0});
+    Object.assign(state, {case:c, model:c.runs.some(r => r.model_id === model) ? model : c.default, tab:labels[tab] ? tab : 'trajectory', run:null, index:Math.max(0,index), session:'all', filter:'all', query:'', file:0, autoplay});
     drawHeader(); setHash();
     await loadRun();
   }
@@ -76,6 +80,7 @@
       if (ticket !== state.request || !dialog.open) return;
       state.run = run; state.index = Math.min(state.index, run.events.length - 1); render();
       $('#replay-live').textContent = `${record.model} loaded`;
+      if (state.autoplay) start();
     } catch (error) {
       if (ticket !== state.request || !dialog.open) return;
       body.innerHTML = `<div class="replay-loading"><h3>Could not open this run.</h3><p>${esc(error.message)}</p><button type="button" data-action="retry">Try again</button></div>`;
@@ -90,11 +95,13 @@
   function trajectoryView() {
     const sessions = Object.entries(state.run.stats.sessions);
     return `${notes()}<div class="replay-player">
-      <div class="replay-controls"><div><button type="button" data-action="restart" aria-label="Restart replay">↤</button><button type="button" data-action="previous" aria-label="Previous event">←</button><button type="button" class="replay-play" data-action="play" aria-pressed="false">▶ Play</button><button type="button" data-action="next" aria-label="Next event">→</button></div><span id="replay-counter"></span><label>Speed <select id="replay-speed" aria-label="Playback speed">${[0.5,1,2,4].map(n => `<option value="${n}" ${n === state.speed ? 'selected' : ''}>${n}×</option>`).join('')}</select></label><a href="${local(selected().href)}" download>Download run JSON ↓</a></div>
+      <div class="replay-watch-bar"><span><i aria-hidden="true"></i><b id="replay-playback-status">Paused</b></span><span>Auto-scroll follows playback · Pause to read</span></div>
+      <div class="replay-controls"><div><button type="button" data-action="restart" aria-label="Restart replay">↤</button><button type="button" data-action="previous" aria-label="Previous event">←</button><button type="button" class="replay-play" data-action="play" aria-pressed="false">▶ Play</button><button type="button" data-action="next" aria-label="Next event">→</button></div><span id="replay-counter"></span><label>Speed <select id="replay-speed" aria-label="Playback speed">${[0.5,1,1.5,2,4].map(n => `<option value="${n}" ${n === state.speed ? 'selected' : ''}>${n}×</option>`).join('')}</select></label><a href="${local(selected().href)}" download>Download run JSON ↓</a></div>
       <input id="replay-scrubber" type="range" min="0" value="0" max="1" aria-label="Replay position">
       <div class="replay-filters"><label>Session <select id="replay-session"><option value="all">All sessions (${num(state.run.stats.events)})</option>${sessions.map(([s,count]) => `<option value="${esc(s)}" ${s === state.session ? 'selected' : ''}>${esc(s)} (${num(count)})</option>`).join('')}</select></label><label>Show <select id="replay-filter">${[['all','All event types'],['tool','Tool calls'],['observation','Tool results'],['message','Assistant messages'],['prompt','Instructions']].map(([value,label]) => `<option value="${value}" ${value === state.filter ? 'selected' : ''}>${label}</option>`).join('')}</select></label><input id="replay-search" type="search" placeholder="Search messages, commands, results…" aria-label="Search trajectory" value="${esc(state.query)}"></div>
+      <div class="replay-event-progress" aria-hidden="true"><span></span></div>
       <div class="replay-stage"><nav id="replay-events" aria-label="Recorded events"></nav><article id="replay-event-detail" tabindex="0"></article></div>
-      <details class="replay-method"><summary>About this recording</summary><p>${esc(manifest.replay_note)}</p><p>Event counts follow the source format and are not comparable measures of model effort. The player starts paused and advances one event every ${3/state.speed} seconds at the selected speed. A tool error in the trace is distinct from an unmet grading criterion.</p><p>${state.run.sources.map(s => `${esc(s.session)}: <code>${esc(s.file)}</code>`).join('<br>')}</p></details>
+      <details class="replay-method"><summary>About this recording</summary><p>${esc(manifest.replay_note)}</p><p>Event counts follow the source format and are not comparable measures of model effort. Start opens playback at the selected speed (1.5× by default); shared links open paused. Events advance every 3 seconds at 1×, with extra reading time for long content. Scrolling or expanding the detail pauses playback. A tool error in the trace is distinct from an unmet grading criterion.</p><p>${state.run.sources.map(s => `${esc(s.session)}: <code>${esc(s.file)}</code>`).join('<br>')}</p></details>
     </div>`;
   }
   function drawList() {
@@ -114,8 +121,11 @@
     $('[data-action="restart"]').disabled = !has;
     $$('[data-event]', body).forEach(b => b.setAttribute('aria-current', Number(b.dataset.event) === state.index ? 'step' : 'false'));
     if (!has) {$('#replay-event-detail').innerHTML = '<div class="replay-loading"><h3>No matching event</h3><p>Try a different search or session.</p></div>'; return;}
-    const active = $(`[data-event="${state.index}"]`, body);
-    if (scroll && active) active.scrollIntoView({block:'nearest', behavior:'instant'});
+    const active = $(`[data-event="${state.index}"]`, body), list = $('#replay-events');
+    if (active) {
+      const top = list.scrollTop + active.getBoundingClientRect().top - list.getBoundingClientRect().top - (list.clientHeight - active.offsetHeight) / 2;
+      list.scrollTo({top:Math.max(0,top), behavior:scroll && !reducedMotion() ? 'smooth' : 'instant'});
+    }
     const names = {message:'Message', reasoning:'Recorded reasoning', call:'Tool call', observation:'Tool result'};
     $('#replay-event-detail').innerHTML = `<div class="replay-detail-head"><span class="replay-eyebrow">EVENT ${num(event.id)} / ${esc(event.session)}</span><span class="replay-kind">${esc(event.role)}</span><h3>${esc(event.title)}</h3><p>${esc(event.timestamp ? new Date(event.timestamp).toISOString().replace('T',' ').replace('.000Z',' UTC').replace('Z',' UTC') : 'Timestamp not recorded')}</p></div>${event.blocks.map((b,i) => {
       const text = b.text || '', long = text.length > 1800 || b.type === 'reasoning';
@@ -123,6 +133,7 @@
       return `<section class="replay-block ${esc(b.type)}"><h4>${esc(names[b.type] || b.type)}${b.name ? ' · ' + esc(b.name) : ''}${b.error ? '<span class="replay-error-tag">tool error</span>' : ''}</h4>${long ? `<details ${b.type !== 'reasoning' && i === 0 ? 'open' : ''}><summary>${esc(text.replace(/\s+/g,' ').slice(0,140))}${text.length > 140 ? '…' : ''}<small>${num(text.length)} characters · expand full text</small></summary><pre>${esc(text)}</pre></details>` : `<pre>${esc(text)}</pre>`}${imageLinks}</section>`;
     }).join('')}<p class="replay-source">Source: ${esc(event.source)}</p>`;
     $('#replay-event-detail').scrollTop = 0;
+    $('.replay-event-progress span').style.transform = 'scaleX(0)';
     setHash();
   }
   function resultsView() {
@@ -149,15 +160,40 @@
     if (!events.length) return;
     state.index = events[Math.min(events.length-1,Math.max(0,position+delta))].id - 1; drawEvent();
   }
+  function start() {
+    state.autoplay = false;
+    if (!state.run || state.tab !== 'trajectory' || !dialog.open || document.hidden) return;
+    const events = visible();
+    if (events.length < 2) return;
+    if (state.index === events.at(-1).id - 1) {state.index = events[0].id - 1; drawEvent();}
+    state.playing = true;
+    dialog.classList.add('replay-playing');
+    $('[data-action="play"]').textContent = 'Ⅱ Pause';
+    $('[data-action="play"]').setAttribute('aria-pressed','true');
+    $('#replay-playback-status').textContent = 'Playing';
+    tick();
+  }
   function tick() {
-    clearTimeout(timer);
+    clearTimeout(timer); cancelAnimationFrame(frame);
     if (!state.playing) return;
+    const detail = $('#replay-event-detail'), progress = $('.replay-event-progress span');
+    const startTop = detail.scrollTop, distance = Math.max(0, detail.scrollHeight - detail.clientHeight - startTop);
+    const duration = (3000 + Math.min(12000, distance * 12)) / state.speed;
+    const started = performance.now();
+    function follow(now) {
+      if (!state.playing) return;
+      const fraction = Math.min(1, (now - started) / duration);
+      progress.style.transform = `scaleX(${fraction})`;
+      if (!reducedMotion()) detail.scrollTop = startTop + distance * Math.max(0, Math.min(1, (fraction - .18) / .72));
+      if (fraction < 1) frame = requestAnimationFrame(follow);
+    }
+    frame = requestAnimationFrame(follow);
     timer = setTimeout(() => {
       if (!dialog.open || document.hidden || state.tab !== 'trajectory') {stop(); return;}
       const events = visible();
       if (!events.length || state.index === events.at(-1).id - 1) {stop(); $('#replay-live').textContent = 'Playback complete'; return;}
       advance(1); tick();
-    }, 3000 / state.speed);
+    }, duration);
   }
   dialog.addEventListener('click', async e => {
     const model = e.target.closest('[data-model-run]');
@@ -173,11 +209,14 @@
     if (!state.run) return;
     if (action === 'play') {
       if (state.playing) {stop(); return;}
-      const events = visible(); if (state.index === events.at(-1)?.id - 1) {state.index = events[0].id - 1; drawEvent();}
-      state.playing = true; $('[data-action="play"]').textContent = 'Ⅱ Pause'; $('[data-action="play"]').setAttribute('aria-pressed','true'); tick();
+      start();
     } else if (action === 'next' || action === 'previous') {stop(); advance(action === 'next' ? 1 : -1);}
     else if (action === 'restart') {stop(); const first = visible()[0]; if (first) {state.index = first.id - 1; drawEvent();}}
   });
+  // Give the reader control as soon as they scroll or expand a recorded block.
+  body.addEventListener('wheel', e => {if (e.target.closest('#replay-event-detail')) stop();}, {passive:true});
+  body.addEventListener('touchstart', e => {if (e.target.closest('#replay-event-detail')) stop();}, {passive:true});
+  body.addEventListener('click', e => {if (e.target.closest('#replay-event-detail summary')) stop();});
   dialog.addEventListener('change', e => {
     if (e.target.id === 'replay-speed') {state.speed = Number(e.target.value); if (state.playing) tick();}
     if (e.target.id === 'replay-session' || e.target.id === 'replay-filter') {stop(); state[e.target.id === 'replay-session' ? 'session' : 'filter'] = e.target.value; drawList();}
@@ -208,7 +247,7 @@
     const parts = location.hash.split('/');
     if (parts[0] === '#replay') openCase(parts[1], parts[2], parts[3], Math.max(0,(Number(parts[4]) || 1) - 1));
   }
-  $('#replay-cards').addEventListener('click', e => {const b = e.target.closest('[data-open-replay]'); if (b) openCase(b.dataset.openReplay);});
+  $('#replay-cards').addEventListener('click', e => {const b = e.target.closest('[data-open-replay]'); if (b) openCase(b.dataset.openReplay, undefined, 'trajectory', 0, true);});
   function initialize() {
     json('cases/manifest.json').then(data => {manifest = data; drawCards(); fromHash();}).catch(() => {
       $('#replay-cards').innerHTML = '<p>Case data could not be loaded. <button type="button" id="replay-init-retry">Try again</button> or <a href="cases/manifest.json">open the case index</a>.</p>';
