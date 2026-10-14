@@ -25,10 +25,10 @@
 .figure-button:hover .zoom-chip{opacity:1}
 .section-heading{margin-bottom:34px}
 .section-aside{font-size:15px;line-height:1.85}
-#efficiency{width:min(1440px,calc(100% - 56px))}
 #efficiency .section-heading,#efficiency>.paper-figure{max-width:1180px;margin-left:auto;margin-right:auto}
-#efficiency .efficiency-card{padding:30px;background:radial-gradient(ellipse at 10% 30%,#eff7f4,transparent 60%),#fff}
+#efficiency .efficiency-card{padding:24px;background:radial-gradient(ellipse at 10% 30%,#eff7f4,transparent 60%),#fff}
 #efficiency .efficiency-layout{grid-template-columns:minmax(0,1fr);gap:14px}
+#efficiency .bubble-main{width:100%;max-width:1000px;margin-inline:auto}
 #efficiency .bubble-main svg{width:100%;height:auto}
 #efficiency .bubble-meta{font-size:12px;padding:6px 14px 2px}
 #efficiency .bubble-node.is-dimmed .bubble-orb{opacity:.83}
@@ -58,7 +58,6 @@
 #benchmark .taxonomy-rail{margin-top:30px}
 @media(max-width:900px){
  .motivation-gaps{gap:30px}
- #efficiency{width:calc(100% - 36px)}
  #efficiency .efficiency-card{padding:22px}
  #efficiency .model-inspector{grid-template-columns:1.3fr .7fr;gap:18px}
  #efficiency .inspector-metrics{grid-column:1/-1;gap:16px}
