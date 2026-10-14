@@ -28,7 +28,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "OA",
       "harness": "Codex CLI",
       "harnessVersion": "0.154.0",
-      "color": "#174d61",
+      "color": "#8cac95",
       "logo": "assets/logos/openai.svg",
       "results": {
         "finance": {
@@ -64,7 +64,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "A",
       "harness": "Claude Code",
       "harnessVersion": "2.1.272",
-      "color": "#4e817f",
+      "color": "#7ea2bd",
       "logo": "assets/logos/anthropic.svg",
       "results": {
         "finance": {
@@ -100,7 +100,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "G",
       "harness": "Gemini CLI",
       "harnessVersion": "0.60.0",
-      "color": "#809baf",
+      "color": "#a39cbf",
       "logo": "assets/logos/google-color.svg",
       "results": {
         "finance": {
@@ -136,7 +136,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "DS",
       "harness": "Claude Code",
       "harnessVersion": "2.1.272",
-      "color": "#73968a",
+      "color": "#d3c280",
       "logo": "assets/logos/deepseek-color.svg",
       "results": {
         "finance": {
@@ -172,7 +172,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "Z",
       "harness": "Claude Code",
       "harnessVersion": "2.1.272",
-      "color": "#566e84",
+      "color": "#d59795",
       "logo": "assets/logos/zai.svg",
       "results": {
         "finance": {
@@ -208,7 +208,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "Q",
       "harness": "Qwen Code",
       "harnessVersion": "0.24.1",
-      "color": "#9cafa6",
+      "color": "#75afaf",
       "logo": "assets/logos/qwen-color.svg",
       "results": {
         "finance": {
@@ -244,7 +244,7 @@ window.PROFESSIONAL_BENCH = {
       "mark": "K",
       "harness": "Kimi Code",
       "harnessVersion": "2.0.2",
-      "color": "#3b626d",
+      "color": "#d4aa8b",
       "logo": "assets/logos/moonshot.svg",
       "results": {
         "finance": {

@@ -44,7 +44,7 @@
       const selected = b.dataset.effDomain === bubble.domain;
       b.classList.toggle('selected', selected); b.setAttribute('aria-pressed', String(selected));
     });
-    const defs = `<defs>${D.models.map(m=>`<radialGradient id="orb-${m.id}" cx="32%" cy="28%" r="85%"><stop offset="0%" stop-color="#eaf2ef" stop-opacity=".92"/><stop offset="48%" stop-color="${m.color}" stop-opacity=".66"/><stop offset="100%" stop-color="${m.color}" stop-opacity=".88"/></radialGradient>`).join('')}</defs>`;
+    const defs = `<defs>${D.models.map(m=>`<radialGradient id="orb-${m.id}" cx="32%" cy="28%" r="85%"><stop offset="0%" stop-color="${m.color}" stop-opacity=".55"/><stop offset="48%" stop-color="${m.color}" stop-opacity=".8"/><stop offset="100%" stop-color="${m.color}" stop-opacity=".94"/></radialGradient>`).join('')}</defs>`;
     const horizontal = (compact ? [35,45,55,65,75] : [35,40,45,50,55,60,65,70,75]).map(v=>`<line class="grid-line" x1="${bounds.left}" x2="${bounds.right}" y1="${y(v)}" y2="${y(v)}"/><text class="axis-text" text-anchor="end" x="${bounds.left-12}" y="${y(v)+4}">${v}</text>`).join('');
     const tickCount=Math.round(axisMaximum/axisStep);
     const ticks=Array.from({length:tickCount+1},(_,i)=>Number((i*axisStep).toFixed(3))).filter((v,i)=>!compact||i%2===0||i===tickCount);
