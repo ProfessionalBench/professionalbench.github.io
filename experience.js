@@ -54,7 +54,7 @@
     bubble.points = D.models.map(m => {
       const r = m.results[bubble.domain];
       // A = πr²: using sqrt(cost) makes circle area proportional to USD per task.
-      return {id:m.id, cx:x(r.delay), cy:y(r.score), radius:Math.sqrt(r.cost)*26*(compact ? .52 : 1)};
+      return {id:m.id, cx:x(r.delay), cy:y(r.score), radius:Math.sqrt(r.cost)*32*(compact ? .52 : 1)};
     });
     const circles = [...bubble.points].sort((a,b)=>b.radius-a.radius).map(p=>{
       const m=D.models.find(m=>m.id===p.id),r=m.results[bubble.domain];

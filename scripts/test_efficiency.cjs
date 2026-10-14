@@ -122,7 +122,7 @@ test('larger circles keep area proportional to cost across domains and selection
       for(const model of h.models) {
         const orb=h.$(`.bubble-node[data-model="${model.id}"] .bubble-orb`);
         const before=['r','cx','cy'].map(key=>orb.getAttribute(key));
-        const radius=+before[0], factor=26*(compact ? .52 : 1);
+        const radius=+before[0], factor=32*(compact ? .52 : 1);
         assert.ok(Math.abs(radius*radius/model.results[domain].cost-factor*factor)<1e-8);
         h.$(`[data-select-model="${model.id}"]`).click();
         assert.deepEqual(['r','cx','cy'].map(key=>orb.getAttribute(key)),before);
